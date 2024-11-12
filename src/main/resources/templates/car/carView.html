@@ -1,0 +1,227 @@
+<div th:replace="~{layouts/header}"></div>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style type="text/css">
+
+.join-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #F0F0F0;
+}
+
+.join-box {
+    width: 600px;
+    padding: 20px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    justify-content: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+td {
+    padding: 10px;
+    vertical-align: middle;
+    border: none;
+}
+th{
+	text-align: left;
+	padding-left: 80px;
+}
+
+
+#reset {
+    background-color: #FFFFFF;
+    color: #3D3D3D;
+    border-color: #3D3D3D;
+    outline-color: #3D3D3D !important;
+}
+
+
+
+#submit {
+    background-color: #3D3D3D; /* 배경색 */
+    color: #FFFFFF; /* 글자색 */
+    border-color: #3D3D3D; /* 테두리 색상 */
+    outline-color: #3D3D3D !important; /* 아웃라인 색상 */
+}
+
+.form-group .btn {
+    width: 100%; /* 버튼 너비 */
+    padding: 10px; /* 버튼 패딩 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #3D3D3D; /* 배경색 */
+    color: white; /* 글자색 */
+    cursor: pointer; /* 커서 모양 */
+    font-size: 14px; /* 글자 크기 */
+}
+
+.custom-select {
+	height: 35px;
+    width: 250px; /* 원하는 너비로 설정 */
+    border: 1px solid #E0E0E0; /* 테두리 설정 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    font-size: 14px; /* 글자 크기 */
+    font-family: 'NanumSquareNeo', Arial, sans-serif;
+}
+
+.btn-submit {
+    width: 90%; /* 버튼 너비 */
+    padding: 10px; /* 버튼 패딩 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #3D3D3D; /* 배경색 */
+    color: white; /* 글자색 */
+    cursor: pointer; /* 커서 모양 */
+    font-size: 16px; /* 글자 크기 */
+}
+
+.btn-submit:hover {
+    background-color: #2a2a2a; /* 마우스 오버 시 배경색 변경 */
+}
+
+
+
+
+</style>
+
+<script>
+function updateOptions() {
+    const sellShop = $('#sellShop').val();
+    const carnum = $('#carnum').val();
+    const addressSellShop = $('#addressSellShop');
+    const addressOptions = $('#addressOptions');
+    console.log(carnum);
+    // 추가 옵션 초기화
+    addressOptions.empty().append('<option value="">옵션 선택</option>');
+
+    if (sellShop) {
+    	addressSellShop.show();
+
+        // AJAX 요청
+        $.ajax({
+            url: '/shopAdd', // 컨트롤러의 URL
+            method: 'GET',
+            data: { shoploca: sellShop, carnum:carnum },
+            success: function(data) {
+                // 받은 데이터 처리
+                data.options.forEach(option => {
+                	addressOptions.append(new Option(option, option));
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching options:', error);
+            }
+        });
+    } else {
+    	addressSellShop.hide();
+    }
+}
+	function checkInput(){
+	
+}
+
+</script>
+
+<div class="join-container">
+    <div class="join-box">
+    <form action="carReservation" method = "post">
+	<input type="hidden" id = "carnum" name="carnum" th:value="${car.carnum}"/>
+    <input type="hidden" name="condition" th:value="${car.condition}"/>
+    <th:block th:if="${car.condition == 'old'}">
+    	<input type="hidden" name="shopname" th:value="${shop.shopname}"/>
+    </th:block>
+    
+    
+    <h2 style="text-align: center;"><strong>[[${car.maker}]] [[${car.modelname}]]</strong></h2>
+    <br>
+    <table>
+    	<tr>
+    		 <td colspan="2" style="text-align: center;">
+    		 	<img th:src="@{car/} + ${car.carimage}" width="400" height="300">
+    		 </td>
+    	</tr>
+    	<tr style="padding-left: 50px;">
+    		<th>등록일</th>
+    		<td>[[${car.cardate}]]</td>
+    	</tr>
+    	<tr>
+    		<th>크기</th>
+    		<td>[[${car.carsize}]]</td>
+    	</tr>
+    	<tr>
+    		<th>출고가</th>
+    		<td>[[${car.price}]] 만원</td>
+    	</tr>
+    	<tr>
+    		<th>유종</th>
+    		<td>
+    		 <th:block th:each="fuel, iterStat : ${fuel}">
+    		[[${fuel.fueltype}]] <th:block th:if="${!iterStat.last}">, </th:block>
+    		</th:block>
+    		</td>
+    	</tr>
+    	<th:block th:if="${car.condition == 'new'}">
+    	<tr>
+    		<th>판매점 지역</th>
+    		<td>
+    			<select id="sellShop" name="sellShop" onchange="updateOptions()" class="custom-select" required >
+                    <option value="">판매점을 골라주세요.</option>
+                    <th:block th:each="shoploca : ${location}">
+                        <option th:value="${shoploca.location}">[[${shoploca.location}]]</option>
+                    </th:block>
+                </select>
+    		</td>
+    	</tr>
+    	<tr id="addressSellShop" style="display: none;">
+    		<th>판매점 이름</th>
+    		<td>
+                <select name="addressOptions" id="addressOptions" class="custom-select" required >
+                	<option value="">옵션 선택</option>
+                </select>
+            </td>
+    	</tr>
+    	</th:block>
+    	<th:block th:if="${car.condition == 'old'}">
+    	<tr>
+    		<th>연식 </th>
+    		<td>[[${car.caryear}]] 년</td>
+    	</tr>
+    	<tr>
+    		<th>주행거리</th>
+            <td>[[${car.mileage}]] KM</td>
+    	</tr>
+    	<tr>
+    		<th>판매점 이름</th>
+    		<td>[[${shop.shopname}]]</td>
+    	</tr>
+    	<tr>
+    		<th>주소</th>
+            <td>[[${shop.address}]]</td>
+    	</tr>
+    	</th:block>
+    	<tr>
+            <td colspan="2" align="right">
+            	<input type="submit" class="btn-submit" id="submit" value="상담 예약 신청">
+            </td>
+        </tr>
+    </table>
+	
+	
+	    
+    </form>
+    </div>
+</div>
+
+
+<div th:replace="~{layouts/footer}"></div>
+
+

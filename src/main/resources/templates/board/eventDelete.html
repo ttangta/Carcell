@@ -1,0 +1,14 @@
+
+<script>
+	window.onload = function() {
+		setTimeout(function(){
+			if("[[${result}]]" == "true") {
+				alert("삭제 성공");
+				location.href="eventList?pg=[[${pg}]]"
+			} else {
+				alert("삭제 실패");
+				history.back();
+			}
+		}, 100);
+	}
+</script>

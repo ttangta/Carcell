@@ -1,0 +1,14 @@
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<div th:replace="~{layouts/header}"/>
+<script type="text/javascript">
+	if("[[${Userid}]]" == "null" || "[[${Userid}]]" == ""){
+		if(confirm("회원전용 서비스입니다. 로그인 하시겠습니까?")){
+			location.href= "/member/loginForm";
+		}else{
+			location.href="/main";
+		}
+	}else{
+		location.href = "/car/sellMyCarForm";
+	}
+</script>
+<div th:replace="~{layouts/footer}"/>

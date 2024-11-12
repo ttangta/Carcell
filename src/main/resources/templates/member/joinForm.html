@@ -1,0 +1,304 @@
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<script type="text/javascript">
+	window.onload = function(){
+		var img = document.getElementById("imgCheck");
+		img.setAttribute("src","/img/x.png");
+		
+	}
+	
+	function checkType(){
+		var type = document.form1.type.value;
+		var frm = document.form1;
+		
+		if(type==1){
+			frm.email1.value="springBootthird";
+			frm.email2.selectedIndex=0;
+			document.getElementById("email1").disabled=true;
+			document.getElementById("email1").value ="springBootthird";
+			document.getElementById("email2").disabled=true;
+			document.getElementById("email2").value="gmail.com";			
+		}else{
+			frm.email1.value="";
+			frm.email2.selectedIndex=0;
+			document.getElementById("email1").disabled=false;
+			document.getElementById("email2").disabled=false;
+		}
+		
+	}
+	
+	function checkPw(){
+		var img = document.getElementById("imgCheck");
+		var frm = document.form1;
+		var pw = frm.pw.value;
+		var re_pw = frm.re_pw.value;
+		if(pw == re_pw && pw != "" && re_pw != ""){
+			img.setAttribute("src","/img/o.png");
+		}else{
+			img.setAttribute("src","/img/x.png");
+		}
+	}
+	
+	function checkemail2(){
+		var email2 = document.getElementById("email2");
+		var email2_value = email2.value;
+		var writeEmail = document.getElementById("writeEmail");
+		var style = getComputedStyle(writeEmail);
+		
+		if(email2_value == "직접입력"){
+			email2.setAttribute("disabled","true");
+			email2.style.display = "none";
+			writeEmail.style.display="block";
+		}
+	}
+	
+</script>
+<script type="text/javascript" src="/js/usermemberScript.js?v=1"></script>
+<style type="text/css">
+h4 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.join-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    position: relative;
+    padding: 30px;
+}
+
+.join-container::before {
+    content: '';
+    position: absolute;
+    top: -50px; /* Adjust to match margin */
+    left: -50px; /* Adjust to match margin */
+    right: -50px; /* Adjust to match margin */
+    bottom: -50px; /* Adjust to match margin */
+    background-color: #f7f7f7; /* Match background color */
+    z-index: -1; /* Place behind container */
+}
+
+    .join-box {
+        width: 600px;
+        padding: 20px;
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        background-color: #FFFFFF;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 10px;
+        vertical-align: middle;
+        border: none;
+    }
+	/* 비밀번호 확인 이미지와 비밀번호 입력 칸 사이의 간격 추가 */
+	.form-group img {
+	    vertical-align: middle;
+	    margin-left: 10px; /* 이미지와 입력 필드 사이의 간격 추가 */
+	}
+	
+	/* 중복확인 버튼과 입력 필드 사이의 간격 추가 */
+	td div {
+	    display: flex;
+	    align-items: center;
+	}
+	
+	td input[type="text"], td input[type="password"], td select {
+	    margin-right: 10px; /* 입력 필드와 버튼 사이의 간격 추가 */
+	}
+	#writeEmail{
+		margin-left: 10px;
+	}
+    .form-control {
+        width: calc(100% - 150px); /* Adjust width to fit button in the same line */
+        padding: 10px;
+        border: 1px solid #E0E0E0;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline-color: #3D3D3D !important;
+    }
+
+#reset{
+	background-color: #FFFFFF;
+	color: #3D3D3D;
+	border-color: #3D3D3D;
+	outline-color: #3D3D3D !important;
+}
+#s{
+	background-color: #3D3D3D;
+	color: #FFFFFF;
+	border-color: #3D3D3D;
+	outline-color: #3D3D3D !important;
+}
+    .radio-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .radio-group input[type="radio"] {
+        margin-right: 5px;
+    }
+
+    .radio-group label {
+        margin-right: 20px;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: calc(100% - 150px); /* Adjust width to fit button in the same line */
+        padding: 10px;
+        border: 1px solid #E0E0E0;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline-color: #3D3D3D !important;
+    }
+
+    .form-group .btn {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #3D3D3D;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .form-group .btn:hover {
+        background-color: #2a2a2a;
+    }
+
+    .email-phone-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .email-phone-group input {
+        margin-right: 5px;
+    }
+
+    .email-phone-group select {
+        margin-left: 5px;
+    }
+
+    .form-group img {
+        vertical-align: middle;
+        margin-left: 10px; /* Add gap between image and input field */
+    }
+</style>
+
+<div th:replace="~{layouts/header}"></div>
+<!-- 회원가입 폼 -->
+<div class="join-container">
+    <div class="join-box">
+        <form action="/member/join" name="form1" method="post">
+            <input type="hidden" name="idChecknum" id="idChecknum" value="0">
+            <input type="hidden" name="type" id="user" checked="checked" value="0">
+            <h4>회원가입</h4>
+            <table>
+                <!-- 이름 -->
+                <tr>
+                    <td>이름</td>
+                    <td>
+                        <input type="text" name="name" class="form-control" placeholder="이름">
+                    </td>
+                </tr>
+                
+                <!-- 아이디 -->
+                <tr>
+                    <td>아이디</td>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" name="id" id="id" class="form-control" placeholder="아이디">
+                            <button type="button" class="btn btn-primary" id="s" onclick="idCheck();">중복확인</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- 비밀번호 -->
+                <tr>
+                    <td>비밀번호</td>
+                    <td>
+                        <input type="password" name="pw" class="form-control" placeholder="비밀번호">
+                    </td>
+                </tr>
+
+                <!-- 비밀번호 재확인 -->
+                <tr>
+                    <td>비밀번호 재확인</td>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <input type="password" name="re_pw" class="form-control" onblur="checkPw()" placeholder="비밀번호 재확인">
+                            <img id="imgCheck" src="" width="20px" height="20px">
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <!-- 이메일 -->
+                <tr>
+                    <td>이메일</td>
+                    <td class="email-phone-group">
+                        <input type="text" name="email1" id="email1" class="form-control" placeholder="이메일">
+                        @
+                        <select name="email2" id="email2" class="form-control" onchange="checkemail2()">
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="hanmail.net">hanmail.net</option>
+                            <option value="직접입력">직접입력</option>
+                        </select>
+                        <input type="text" name="writeEmail" id="writeEmail"  class= "form-control" style="display: none" size="5" placeholder="이메일을 작성해주세요">
+                    </td>
+                </tr>
+
+                <!-- 전화번호 -->
+                <tr>
+                    <td>전화번호</td>
+                    <td class="email-phone-group">
+                        <select name="tel1" class="form-control">
+                            <option value="010">010</option>
+                            <option value="011">011</option>
+                            <option value="012">012</option>
+                        </select>
+                        -
+                        <input type="text" name="tel2" size="4" maxlength="4" class="form-control" placeholder="전화번호">
+                        -
+                        <input type="text" name="tel3" size="4" maxlength="4" class="form-control" placeholder="전화번호">
+                    </td>
+                </tr>
+
+                <!-- 주소 -->
+                <tr>
+                    <td>주소</td>
+                    <td>
+                        <input type="text" name="addr" class="form-control" placeholder="주소">
+                    </td>
+                </tr>
+
+                <!-- 버튼들 -->
+                <tr>
+                    <td colspan="2" align="center">
+                        <button type="button" class="btn btn-primary" id="s" onclick="inputCheck()">회원가입</button>
+                        <button type="button" class="btn btn-primary" id="reset" onclick="window.location.reload()">다시작성</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<div th:replace="~{layouts/footer}"></div>

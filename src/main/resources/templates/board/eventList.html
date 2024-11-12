@@ -1,0 +1,143 @@
+<style>
+main {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    background-color: #F0F0F0; /* 배경 색상 설정 */
+    height: auto; /* 전체 화면 높이 */
+    min-height: 500px; /* 최소 높이 설정 */
+    padding: 20px;
+}
+.listcontainer {
+    width: 750px; /* 이벤트 콘텐츠 너비 */
+    padding: 20px; /* 내부 여백 추가 */
+    background-color: #F9F9F9; /* 배경 색상 설정 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 부드러운 그림자 추가 */
+}
+table {
+	border-collapse: collapse; /* 셀의 경계가 합쳐지도록 설정 */
+	width: 680; /* 테이블의 너비를 100%로 설정 */
+}
+.table td {
+    border-bottom: 1px solid black; /* 셀의 테두리 설정 */
+}
+.subject {
+	font-size: 20px;
+	font-weight: bold;
+}
+.page{
+	height: 50;
+	padding: 5;
+}
+.paging {
+    color: black; /* 기본 글자 색상 */
+    text-decoration: none; /* 링크에 밑줄 제거 */
+    font-size: 16px; /* 기본 글자 크기 */
+    font-weight: normal; /* 기본 글자 두께 */
+    margin: 0 10px;
+}
+
+.paging:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+
+.paging.selected {
+    font-size: 18px; /* 선택된 페이지의 글자 크기 증가 */
+    font-weight: bold; /* 선택된 페이지의 글자 두께 증가 */
+}
+
+/* 현재 페이지 스타일 */
+.currentPaging {
+    color: black; /* 현재 페이지의 글자 색상 */
+    text-decoration: none; /* 현재 페이지 링크에 밑줄 제거 */
+    font-size: 18px; /* 현재 페이지의 글자 크기 */
+    font-weight: bold; /* 현재 페이지의 글자 두께 */
+}
+.write-btn {
+    width: 90px; /* 각 버튼의 고정된 너비 */
+    height: 40px; /* 버튼 높이 */
+    font-size: 16px;
+    border: 1px solid #3D3D3D;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'NanumSquareNeoBold', Arial, sans-serif;
+	background-color: 3D3D3D;
+    color: #FFFFFF;
+    border-radius: 5px;
+}
+.write-btn:hover {
+    background-color: #303030;
+}
+
+.no-events-message {
+    text-align: center; /* 중앙 정렬 */
+    margin-top: 20px; /* 위쪽 여백 추가 */
+}
+
+
+</style>
+
+<div th:replace="~{layouts/header}"></div>
+<div>
+<main>
+<div class="listcontainer">
+	<th:block th:if="${list.size()!=0}">
+    <table class="table">
+        <tr th:each="dto : ${list}" class="table-primary">
+            <td style="margin-right: 0; width: 300px;">
+                <a th:href="@{eventView(seq=${dto.seq}, pg=${pg})}"> 
+                    <img th:src="@{car/} + ${dto.eventimg}" width="300" height="150">
+                </a>
+            </td>
+            <td style="margin: 0; width: 300px;">
+                <p class="subject">[[${dto.eventsubject}]]</p>
+                <p>[[${dto.eventsubject2}]]</p>
+                <p>[[${dto.eventlong}]]</p>
+            </td>
+        </tr>
+        <tr align="center" class="page">
+            <td colspan="5" style="border: none;">
+                <th:block th:if="${startPage > 3}">
+                    <a th:href="@{/eventList(pg=${startPage-1})}" class="paging"><<</a>
+                </th:block> 
+
+                <th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                    <th:block th:if="${pg == i}">
+                        <a th:href="@{/eventList(pg=${i})}" class="paging selected" th:text="${i}"></a>
+                    </th:block>
+                    <th:block th:unless="${pg == i}">
+                        <a th:href="@{/eventList(pg=${i})}" class="paging" th:text="${i}"></a>
+                    </th:block>
+                </th:block> 
+                
+                <th:block th:if="${endPage < totalP}">
+                    <a th:href="@{/eventList(pg=${endPage+1})}" class="paging">>></a>
+                </th:block>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right" style="border: none; padding: 5px;">
+            	<th:block th:if="${userId == 'admin'}" >
+            		<button type="button" class="write-btn" onclick="location.href='/eventWriteForm'">새글등록</button>
+           		</th:block>
+            </td>
+        </tr>
+    </table>
+    </th:block>
+    <th:block th:if="${list.size()==0}">
+    	<br>
+    	 <p class="subject no-events-message">현재 진행중인 이벤트가 없습니다.</p>
+    	<br>
+    	<th:block th:if="${userId == 'admin'}" >
+            		<button type="button" class="write-btn" onclick="location.href='/eventWriteForm'">새글등록</button>
+    	</th:block>
+    </th:block>
+    
+</div>
+</main>
+</div>
+
+<div th:replace="~{layouts/footer}"/>

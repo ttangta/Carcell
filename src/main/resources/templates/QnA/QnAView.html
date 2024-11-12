@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style>
+
+#list {
+    background-color: #3D3D3D; /* 버튼 배경 색상 */
+    color: #FFFFFF; /* 버튼 텍스트 색상 */
+    border: none; /* 버튼 경계 제거 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    padding: 10px 20px; /* 버튼 내 여백 */
+    margin: 3px; /* 버튼 간 여백 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    font-size: 18px; /* 폰트 크기 */
+}
+
+#tag {
+    background-color: #EBEBEB; /* 배경 색상 */
+    color: #3D3D3D; /* 텍스트 색상 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    margin-bottom: 20px; /* 하단 여백 */
+    text-align: center; /* 텍스트 오른쪽 정렬 */
+    font-size: 18px; /* 폰트 크기 */
+}
+
+.custom-hr {
+    margin: 5px 0; /* 상하 간격을 5픽셀로 설정 */
+    border: none; /* 기본 테두리 제거 */
+    height: 1px; /* 선의 두께 설정 */
+    background-color: #ccc; /* 선 색상 설정 */
+}
+
+
+#footer{
+	color: #FFFFFF;
+}
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/QnAView.css?v=4">
+    <script type="text/javascript" src="../js/jquery-3.7.1.js"></script>
+    <script type="text/javascript" src="../js/comments_del_mdy.js?v=4"></script>
+    <script type="text/javascript">
+        function confirm_del() {
+            if (confirm("정말 삭제할까요?")) {
+                location.href = "QnADelete?seq=[[${QnA.seq}]]&pg=[[${pg}]]";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div th:replace="~{layouts/header}"></div>
+    <div class="container" style="width:70%;">
+        <table class="table">
+            <tr>
+                <td colspan="3">
+                    <h2>[[${QnA.subject}]]</h2>
+                </td>
+            </tr>
+            <tr align="center" id="tag">
+                <td><strong>글번호 : </strong> <span>[[${QnA.seq}]]</span></td>
+                <td><strong>작성자 : </strong> <span>[[${QnA.name}]]</span></td>
+                <td><strong>조회수 : </strong> <span>[[${QnA.hit}]]</span></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div style="width: 100%; height: 500px; border: 1px solid #ddd; padding: 10px; overflow-y: auto; font-size:25px;">
+                        <div th:utext="${QnA.content}"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr align="left">
+                <td colspan="3">
+                    <input type="button" id="list" value="목록" th:onclick="|location.href='/QnA/QnAList?pg=${pg}'|"> 
+                    <th:block th:if="${Userid == QnA.id}">
+                        <input type="button" id="list" value="글수정" th:onclick="|location.href='/QnA/QnAModifyForm?seq=${QnA.seq}&pg=${pg}'|">
+                        <input type="button" id="list" value="글삭제" th:onclick="confirm_del()">
+                    </th:block>
+                </td>
+            </tr>
+        </table>
+
+        <!-- 댓글 작성 폼 -->
+        <div id="comment_write" th:if="${Userid != null}">
+            <form action="#" th:action="@{/QnA/addComment}" method="post">
+                <label for="comment" style="font-size: 18px;">댓글</label>
+                <textarea id="comment" name="comment" placeholder="댓글을 입력하세요..." style="font-size: 18px; resize: none;"></textarea>
+                <input type="hidden" name="qnaSeq" th:value="${QnA.seq}"> 
+                <input type="submit" id="list" value="저장">
+            </form>
+        </div>
+
+        <!-- 댓글 리스트 -->
+        <div th:each="comment : ${comments}" class="comment-item" th:if="${comment.parentComment == null}">
+            <div class="comment-header">
+                <div class="comment-meta">
+                    <div class="comment-info">
+                        <strong><span th:text="${comment.user_id != null ? comment.user_id.id : 'Unknown User'}"></span></strong>
+                        - [[${comment.formattedCmtlogtime}]]
+                    </div>
+                    <div class="comment-actions">
+                        <div th:if="${Userid == comment.user_id.id}">
+                            <button class="btn btn-link" th:attr="data-edit=${comment.num}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <form th:action="@{/QnA/CommentDelete(num=${comment.num}, seq=${QnA.seq}, pg=${pg})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display: inline;">
+                                <button class="btn btn-link" type="submit">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div th:if="${Userid != null && comment.parentComment == null}">
+                            <button class="btn btn-link" th:attr="data-reply=${comment.num}">
+                                <i class="bi bi-reply"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 댓글 내용 -->
+            <div th:id="'comment-content-' + ${comment.num}" style="white-space: pre-wrap;" class="comment-content" th:utext="${comment.cmtcontent}" align="left"></div>
+            <!-- 수정 폼 -->
+            <div th:id="'comment-edit-' + ${comment.num}" class="comment-edit">
+                <textarea class="form-control" th:id="'edit-textarea-' + ${comment.num}" th:text="${comment.cmtcontent}"></textarea>
+                <br>
+                <button class="btn btn-primary" th:attr="data-update=${comment.num}">저장</button>
+                <button class="btn btn-secondary" th:attr="data-cancel=${comment.num}">취소</button>
+            </div>
+
+            <!-- 대댓글 입력 폼 -->
+            <div th:id="'reply-form-' + ${comment.num}" class="reply-form">
+                <form action="#" th:action="@{/QnA/addReply}" method="post">
+                    <label th:for="'reply-comment-' + ${comment.num}">답글:</label>
+                    <textarea th:id="'reply-comment-' + ${comment.num}" name="replyContent" placeholder="답글을 입력하세요..." style="font-size: 18px; resize: none;"></textarea>
+                    <input type="hidden" name="parentCommentId" th:value="${comment.num}"> 
+                    <input type="hidden" id="qna-seq" name="qnaSeq" th:value="${QnA.seq}"> 
+                    <input type="submit" id="list" value="저장">
+                </form>
+            </div>
+
+            <!-- 대댓글 리스트 -->
+            <div th:if="${#lists.size(comment.replies) > 0}" class="replies-list">
+                <div th:each="reply : ${comment.replies}" class="reply-item">
+                    <div class="reply-header">
+                        <div class="comment-meta">
+                            <span th:text="${reply.user_id != null ? reply.user_id.id : 'Unknown User'}"></span>
+                            <span> - </span> <span>[[${reply.formattedCmtlogtime}]]</span>
+                        <div class="comment-actions" th:if="${Userid == reply.user_id.id}">
+                            <button class="btn btn-link" th:attr="data-reply-edit=${reply.num}" th:onclick="startEditingReply(${reply.num})">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <form th:action="@{/QnA/CommentDelete(num=${reply.num}, seq=${QnA.seq}, pg=${pg})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display: inline;">
+                                <button class="btn btn-link" type="submit">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- 대댓글 내용 -->
+                    <div th:id="'reply-content-' + ${reply.num}" class="reply-content" style="white-space: pre-wrap;" th:text="${reply.cmtcontent}"></div>
+                    <!-- 대댓글 수정폼 -->
+                    <div th:id="'reply-edit-' + ${reply.num}" class="reply-edit" style="display: none;">
+                        <textarea class="form-control" th:id="'reply-edit-textarea-' + ${reply.num}" th:text="${reply.cmtcontent}"></textarea>
+                        <br>
+                        <button class="btn btn-primary" th:attr="data-reply-update=${reply.num}">저장</button>
+                        <button class="btn btn-secondary" th:attr="data-reply-cancel=${reply.num}">취소</button>
+                    </div>
+                    <hr class="custom-hr">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<div th:replace="~{layouts/footer}"/>
+

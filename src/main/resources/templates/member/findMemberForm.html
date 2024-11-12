@@ -1,0 +1,184 @@
+<div th:replace="~{layouts/header}"></div>
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<style type="text/css">
+.find-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 555px;
+    background-color: #f7f7f7;	
+    margin:0;
+    font-family: 'NanumSquareNeo', Arial, sans-serif;
+}
+.findmenu{
+    width: 600px;
+    padding: 20px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    align-items: center;
+}
+.form-group-n{
+	width: 95%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.form-group-e{
+	width: 50%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+select{
+    width: 40%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+#idbutton {
+    width: 95%;
+    height: 40px;
+    background-color: #3D3D3D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+#idbutton :hover {
+    background-color: #2a2a2a;
+}
+.table{
+	margin:auto; 
+	width: 450px;
+	border: hidden;
+}
+.table tr{
+	border: hidden;
+}
+#find{
+	font-size: 15px;
+	text-decoration: none;
+	color: 3D3D3D;
+}
+#find:hover{text-decoration: underline;}
+
+</style>
+<script type="text/javascript">
+	function emailCheck(){
+		var email2 = document.getElementById('email2');
+		var email2_value = email2.value;
+		var writeEmail = document.getElementById("writeEmail");
+		if(email2_value == "직접입력"){
+			email2.setAttribute("disabled","disabled");
+			email2.style.display = "none";
+			writeEmail.style.display = "inline-block";
+		}
+	}
+	function inputCheck(){
+		var frm = document.findId;
+		var writeEmail = document.getElementById("writeEmail");
+		var style = getComputedStyle(writeEmail);
+		if(style.display == "inline-block"){
+			if(!writeEmail.value.trim()){
+				alert("이메일을 입력해주세요");
+				writeEmail.focus();
+				return false;
+			}
+		}
+		if(!frm.name.value.trim()){
+			alert("이름을 입력해주세요");
+			frm.name.focus();
+			return false;
+		}else if(!frm.email1.value.trim()){
+			alert("이메일을 입력해주세요");
+			frm.email1.focus();
+			return false;
+		}
+		frm.submit();
+	}
+	
+</script>
+
+<div class="find-container">
+	<div class="findmenu">
+			<form action="/member/findId" name="findId" method="post">
+				<th:block th:if="${menu == 'id'}">
+					<table class="table">
+						<tr>
+							<td>
+								<input type="text" name="name" required="required" class="form-group-n" placeholder="이름을 입력해주세요" >
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="text" name="email1" required="required" class="form-group-e" placeholder="이메일을 입력해주세요">
+								@
+								<select name="email2" onchange="emailCheck()" id="email2">
+									<option value="gmail.com">gmail.com</option>
+									<option value="naver.com">naver.com</option>
+									<option value="hanmail.com">hanmail.com</option>
+									<option value="직접입력">직접입력</option>
+								</select>
+								<input type="text" name="writeEmail" style="margin-left: 10px; display: none" id="writeEmail" placeholder="이메일을 입력해주세요" class="form-group">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="button" id="idbutton" value="아이디 찾기" class="btn btn-dark btn-sm" onclick="inputCheck()">
+							</td>
+						</tr>
+						<tr>
+							<td align="center">
+								<a id="find" href="/member/findMemberForm?menu=pw">비밀번호 찾기</a>
+								&nbsp;|&nbsp;
+								<a id="find" href="/member/loginForm">로그인</a>
+							</td>
+						</tr>
+					</table>
+				</th:block>
+			</form>
+			
+			<form action="/member/findPw" name="findPw" method="post">
+				<th:block th:if="${menu == 'pw'}">
+					<table class="table">
+						<tr>
+							<td>
+								<input type="text" name="id" class="form-group-n" required="required" placeholder="아이디를 입력해주세요">
+							</td>
+						</tr>
+						<th:block th:if="${error == 1}">
+							<tr>
+								<td align="center" style="color: red; font-size: 14;">존재하지 않는 아이디입니다.</td>
+							</tr>
+						</th:block>
+						<tr>
+							<td>
+								<input type="submit" id="idbutton" class="btn btn-dark btn-sm" value="비밀번호 찾기">
+							</td>
+						</tr>
+						<tr>
+							<td align="center">
+								<a id="find" href="/member/findMemberForm?menu=id">아이디 찾기</a>
+								&nbsp;|&nbsp;
+								<a id="find" href="/member/loginForm">로그인</a>
+							</td>
+						</tr>
+					</table>
+				</th:block>
+			</form>
+		
+		
+	</div>
+</div>
+<div th:replace="~{layouts/footer}"></div>

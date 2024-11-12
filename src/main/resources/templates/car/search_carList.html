@@ -1,0 +1,225 @@
+<div th:replace="~{layouts/header}"></div>
+<style>
+main {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    background-color: #F0F0F0; /* 배경 색상 설정 */
+    min-height: 700px;
+    height: auto; /* 전체 화면 높이 */
+    padding: 10px;
+}
+.total{
+	width: 1000px;
+	padding: 20px;
+    background-color: #FFFFFF; /* 배경 색상 설정 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 부드러운 그림자 추가 */
+}
+.carlist {
+	width: 900px;
+	list-style-type: none;
+	border: 1px solid black;
+	padding: 10px;
+	margin: 5px 0; /* 항목 간 간격 */
+	justify-content: space-between; /* 양쪽으로 배치 */
+}
+
+.carinfo {
+	display: flex; /* Flexbox 사용 */
+	align-items: center; /* 수직 정렬 */
+}
+
+.img {
+	flex: 0 0 auto; /* 이미지 크기를 고정 */
+	margin-right: 20px; /* 이미지와 디테일 간의 간격 */
+}
+
+.cardetail {
+	flex: 1; /* 남은 공간을 차지 */
+	text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.sel ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.sel li {
+	display: inline;
+	margin-right: 20px;
+}
+
+.container_detailsearch {
+	border: 1px solid black;
+	width: 900;
+}
+
+/* 버튼 설정? */
+.link-button {
+	background: none; /* 배경 제거 */
+	border: none; /* 테두리 제거 */
+	cursor: pointer; /* 커서 변경 */
+	font: inherit; /* 상속된 폰트 스타일 사용 */
+	padding: 0; /* 패딩 제거 */
+	transition: color 0.3s; /* 부드러운 색상 변화 */
+}
+
+.link-button:hover {
+	color: #0056b3; /* 호버 시 색상 변화 */
+}
+
+.price-input {
+	padding: 20px; /* td의 여백 조절 */
+}
+
+.price-input input[type="text"] {
+	width: 150px; /* 입력 필드 너비 조절 */
+	height: 35px; /* 입력 필드 높이 조절 */
+	font-size: 16px; /* 텍스트 크기 조절 */
+}
+
+.price-input button {
+	height: 35px; /* 버튼 높이 조절 */
+	font-size: 16px; /* 버튼 텍스트 크기 조절 */
+	padding: 0 15px; /* 버튼 좌우 여백 조절 */
+}
+
+.carright input {
+	height: 35px; /* 버튼 높이 조절 */
+	font-size: 16px; /* 버튼 텍스트 크기 조절 */
+	padding: 0 15px; /* 버튼 좌우 여백 조절 */
+}
+/* 페이지 스타일 추가 */
+.page {
+	height: 50px;
+	padding: 5px;
+}
+
+.paging {
+	color: black; /* 기본 글자 색상 */
+	text-decoration: none; /* 링크에 밑줄 제거 */
+	font-size: 16px; /* 기본 글자 크기 */
+	font-weight: normal; /* 기본 글자 두께 */
+	margin: 0 10px;
+}
+
+.paging:hover {
+	text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+
+.paging.selected {
+	font-size: 18px; /* 선택된 페이지의 글자 크기 증가 */
+	font-weight: bold; /* 선택된 페이지의 글자 두께 증가 */
+}
+
+/* 현재 페이지 스타일 */
+.currentPaging {
+	color: black; /* 현재 페이지의 글자 색상 */
+	text-decoration: none; /* 현재 페이지 링크에 밑줄 제거 */
+	font-size: 18px; /* 현재 페이지의 글자 크기 */
+	font-weight: bold; /* 현재 페이지의 글자 두께 */
+}
+
+.btn-submit {
+    width: 100%; /* 버튼 너비 */
+    padding: 10px; /* 버튼 패딩 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #3D3D3D; /* 배경색 */
+    color: white; /* 글자색 */
+    cursor: pointer; /* 커서 모양 */
+    font-size: 18px; /* 글자 크기 */
+}
+
+.btn-submit:hover {
+    background-color: #2a2a2a; /* 마우스 오버 시 배경색 변경 */
+}
+
+.header {
+    display: flex; /* Flexbox 사용 */
+    justify-content: space-between; /* 양쪽 끝으로 배치 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin: 20px 40px; /* 상하 20px, 좌우 40px 여백 */
+}
+</style>
+
+
+<main>
+    <div class="total" align="center">
+        <form id="listForm" method="POST" action="newcarList">
+        	<div class="header">
+        	<th:block th:if="${re_search != ''}">
+        	<h1 th:if="${re_search != ''}">"[[${re_search}]]" 검색결과</h1>
+        	<h3> 총 "[[${total}]]" 건</h3>
+        	</th:block>
+    		<h1 th:if="${re_search == ''}">검색어를 입력해 주세요.</h1>
+    		
+            </div>
+            <!-- 검색 결과가 있을 때 -->
+            <th:block th:if="${list != null && list.size() > 0 && re_search !=''}">
+                <ul th:each="car : ${list}">
+                    <li class="carlist">
+                        <div class="carinfo">
+                            <div class="img">
+                                <a id="subjectA" href="#" th:onclick="location.href='carView?carnum=[[${car.carnum}]]'">
+                                    <img th:src="@{car/} + ${car.carimage}" width="200" height="150">
+                                </a>
+                            </div>
+                            <div class="cardetail">
+								<p style="font-size: 24px;"><strong> [[${car.maker}]] [[${car.modelname}]]</strong></p>
+								<br>
+								<p style="font-size: 18px;">등록일 : [[${car.cardate}]] | 차종 : [[${car.carsize}]]</p>
+								<th:block th:if="${car.condition=='old'}">
+								<br>
+								<p style="font-size: 18px;">연식 : [[${car.caryear}]]년식 | 주행거리 : [[${car.mileage}]]km</p>
+								</th:block>
+                            </div>
+						<div class="carright" style="display: flex; justify-content: space-between; align-items: center;">
+						<div>
+							<p><strong>출고가 : [[${car.price}]] 만원 ~&nbsp;&nbsp;&nbsp;</strong></p>
+						</div>
+						<div>
+							<a th:href="@{/carView(carnum=${car.carnum})}">
+   								<input type="button" class="btn-submit" value="상담신청">
+							</a>
+						</div> 
+						</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- 페이징 -->
+                <th:block th:if="${totalPage > 1}">
+                    <div align="center" class="page">
+                        <th:block th:if="${startPage > 3}">
+                            <a th:href="@{search_car(search=${re_search},pg=${startPage-1})}" class="paging"> << </a>
+                        </th:block>
+                        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                            <th:block th:if="${pg == page}">
+                                <a th:href="@{search_car(search=${re_search},pg=${page})}" class="currentPaging">[[${page}]]</a>
+                            </th:block>
+                            <th:block th:if="${pg != page}">
+                                <a th:href="@{search_car(search=${re_search},pg=${page})}" class="paging">[[${page}]]</a>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${endPage < totalPage}">
+                            <a th:href="@{search_car(search=${re_search},pg=${endPage+1})}" class="paging"> >> </a>
+                        </th:block>
+                    </div>
+                </th:block>
+            </th:block>
+
+            <!-- 검색 결과가 없을 때 -->
+            <th:block th:if="${list == null || list.size() == 0 || re_search ==''}">
+            	<div style="height:600px;">
+            		<br>
+                	<h2 style="text-align: left; margin: 0 0 20px 40px;">해당 항목이 존재하지 않습니다.</h2>
+                </div>
+            </th:block>
+        </form>
+    </div>
+</main>
+
+
+<div th:replace="~{layouts/footer}"></div>

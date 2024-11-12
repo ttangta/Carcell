@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<div th:replace="~{layouts/header}"></div>
+<style type="text/css">
+.join-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Container margin */
+    padding: 10px;
+	background-color: #f7f7f7; /* Light gray background */
+}
+
+.join-box {
+    width: 600px;
+    padding: 20px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin:auto;
+}
+
+td {
+    padding: 10px;
+    vertical-align: middle;
+    border: none;
+}
+p{
+	text-align: left;
+}
+.car-image {
+    width: 450px; /* 원하는 너비 */
+    height: auto; /* 비율에 맞게 높이 자동 조정 */
+}
+</style>
+<script type="text/javascript">
+	function check(){
+		var frm = document.carAuctionForm;
+		if(confirm("정말 승인하시겠습니까?")){
+			frm.submit();
+		}
+	}
+</script>
+<div class="join-container">
+    <div class="join-box">
+	<form action="/car/newCarOk" name="carAuctionForm" method="post">
+		<table class="table">
+		<input type="hidden" name="seq" th:value="${seq}">
+		<input type="hidden" name="carnum" th:value="${car.carnum}">
+		<input type="hidden" name="shopid" th:value="${shop.shopid}">
+		<input type="hidden" name="sellerid" th:value="${car.sellerid}">
+			<tr>
+				<td><h5><strong>[[${user.name}]] 님의 상담 신청 차량</strong></h5></td>
+				<td><p name="carnum">등록번호 : NO.[[${car.carnum}]]</p></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<img th:src="@{../car/} + ${car.carimage}" class="car-image">
+				</td>
+			</tr>
+			<tr>
+				<td><p name="maker">모델명 : [[${car.maker}]] [[${car.modelname}]]</p></td>
+				<td><p name="carsize">크기 : [[${car.carsize}]]</p></td>
+			</tr>
+			<th:block th:if="${!car.condition.equals('new')}">
+			<tr>
+				<td><p name="caryear">연식 : [[${car.caryear}]] 년식</p></td>
+				<td><p name="mileage">주행거리 : [[${car.mileage}]] KM</p></td>
+			</tr>
+			</th:block>
+			<tr>
+				<td><p name="shopname">장소 : [[${shop.shopname}]]</p></td>
+				<td><p name="shopadd">상세 주소 : [[${shop.address}]]</p></td>
+			</tr>
+			<tr>
+				<td><p name="cardate">등록일자 : [[${car.cardate}]]</p></td>
+				<td><p name="carprice"> 측정가격 : [[${car.price}]] 만원</p></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				<!-- 변경점 -->
+				<th:block th:if="${admin.status == 0 && user.id.equals('admin')}">
+					<input type="button" class="btn btn-dark btn-sm" value="승인하기" onclick="check();">
+				</th:block>
+					<input type="button" class="btn btn-dark btn-sm" value="목록으로" onclick="history.back();">
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+</div>
+<div th:replace="~{layouts/footer}"></div>

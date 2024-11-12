@@ -1,0 +1,209 @@
+@charset "UTF-8";
+
+/* 기존 스타일 유지 */
+* {
+	padding: 0;
+	margin: 0;
+	color: #333;
+}
+
+.container {
+	margin-top: 20px;
+	padding: 30px;
+	background-color: #F9F9F9;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	max-width: 1000px; /* 최대 너비 설정 */
+	width: 100%; /* 가변 너비 설정 */
+}
+
+table {
+	width: 100%; /* 테이블 너비를 100%로 설정 */
+}
+
+h2 {
+	text-align: center; /* 제목 중앙 정렬 */
+}
+
+body {
+	font-family: Arial, sans-serif;
+}
+
+ul {
+	list-style: none;
+}
+
+h1 {
+	font-size: large;
+	border-left: 10px solid #7baeb5;
+	border-bottom: 1px solid #7baeb5;
+}
+
+.comment-item {
+	margin-bottom: 20px;
+}
+
+.comment-content, .comment-edit {
+	border: 1px solid #ddd;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+.comment-edit {
+	display: none; /* 기본적으로 숨김 */
+}
+
+.btn {
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 5px;
+}
+
+.btn-primary {
+	background-color: #007bff;
+	color: #fff;
+}
+
+.btn-secondary {
+	background-color: #6c757d;
+	color: #fff;
+}
+
+.btn:hover {
+	opacity: 0.8;
+}
+
+#comment_write {
+	padding: 20px 15px;
+	border-bottom: 1px solid #7baeb5;
+}
+
+#comment_write label {
+	display: inline-block;
+	width: 80px;
+	font-size: 14px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+#comment_write input[type="text"], textarea {
+	border: 1px solid #ccc;
+	vertical-align: middle;
+	padding: 3px 10px;
+	font-size: 12px;
+	line-height: 150%;
+}
+
+#comment_write textarea {
+	width: 380px;
+	height: 90px;
+}
+
+/* 댓글 리스트 스타일 */
+.comment-item {
+	padding: 15px;
+	border-bottom: 1px dotted #ccc;
+	margin-bottom: 10px;
+}
+
+.comment_item .write {
+	color: #555;
+	line-height: 200%;
+}
+
+.comment_item .write input {
+	vertical-align: middle;
+}
+
+.comment_item .write .name {
+	color: #222;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+/* 댓글 상단 스타일 */
+.comment-header {
+	display: flex; /* Flexbox로 정렬 */
+	justify-content: space-between; /* 양 끝으로 정렬 */
+	align-items: center; /* 수직 정렬 */
+}
+
+.comment-meta {
+	display: flex; /* Flexbox로 정렬 */
+	flex-grow: 1; /* 남은 공간 차지 */
+	align-items: center; /* 수직 정렬 */
+}
+
+.comment-meta span {
+	margin-right: 5px; /* 오른쪽에 여백 추가 */
+}
+
+.comment-actions {
+	display: flex; /* Flexbox로 정렬 */
+	align-items: center; /* 수직 정렬 */
+	margin-left: auto; /* 오른쪽으로 정렬 */
+}
+
+.comment-actions .btn {
+	font-size: 12px; /* 버튼 텍스트 크기 조정 */
+	padding: 4px 6px; /* 버튼 내부 여백 조정 */
+}
+
+.comment-actions .btn i {
+	font-size: 14px; /* 아이콘 크기 조정 */
+}
+
+/* 버튼 스타일 */
+.btn-link {
+	background: none;
+	border: none;
+	padding: 0;
+	color: #007bff;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.btn-link i {
+	font-size: 18px;
+}
+
+/* 답글 폼 스타일 */
+.reply-form {
+	margin-left: 20px; /* 부모 댓글과의 간격 조정 */
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+	display: none; /* 기본적으로 숨김 상태로 설정 */
+}
+
+/* 대댓글의 디자인 수정 */
+.reply-item {
+	margin-left: 20px; /* 대댓글의 들여쓰기 */
+	padding: 5px;
+	border-left: 2px solid #ddd; /* 대댓글과 부모 댓글을 구분하기 위한 선 */
+	background-color: #f9f9f9; /* 대댓글 배경색 (옵션) */
+}
+
+/* 대댓글 내용의 오른쪽 정렬을 위한 추가 스타일 */
+.reply-content {
+	display: block; /* 블록 요소로 설정하여 줄바꿈 적용 */
+	text-align: left; /* 왼쪽 정렬로 변경 */
+	padding: 5px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	white-space: pre-wrap; /* 줄바꿈을 유지하기 위한 설정 */
+}
+
+/* 대댓글의 수정 폼과 댓글 수정 폼 간 간격 조정 */
+.comment-edit, .reply-edit {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/* 대댓글의 내용과 상단 헤더 간 여백 조정 */
+.reply-content, .reply-header {
+	margin: 5px 0;
+}

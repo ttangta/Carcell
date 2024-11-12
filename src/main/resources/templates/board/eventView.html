@@ -1,0 +1,98 @@
+<style>
+/* 기본 스타일 */
+main {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    background-color: #F0F0F0; /* 배경 색상 설정 */
+    height: auto; /* 전체 화면 높이 */
+    padding: 10px;
+    min-height: 580px;
+    font-family: 'NanumSquareNeo', Arial, sans-serif;
+}
+
+/* 이벤트 컨테이너 스타일 */
+.event-container {
+    width: 800px; /* 이벤트 콘텐츠 너비 */
+    padding: 20px; /* 내부 여백 추가 */
+    background-color: #F9F9F9; /* 배경 색상 설정 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 부드러운 그림자 추가 */
+}
+
+/* 이벤트 헤더 스타일 */
+.event-header {
+    background-color: #EBEBEB; /* 배경 색상 */
+    color: #3D3D3D; /* 텍스트 색상 */
+    padding: 10px; /* 내부 여백 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    margin-bottom: 20px; /* 하단 여백 */
+    text-align: right; /* 텍스트 오른쪽 정렬 */
+    margin-top: 10px;
+}
+
+/* 이벤트 내용 스타일 */
+.event-content {
+    margin-bottom: 30px; /* 하단 여백 */
+}
+
+.event-content img {
+    width: 100%; /* 이미지 너비 100%로 설정 */
+    height: auto; /* 자동 높이 조정 */
+    border-radius: 4px; /* 모서리 둥글게 */
+}
+
+.event-buttons {
+	margin-top: 50px;
+    text-align: right; /* 버튼 오른쪽 정렬 */
+}
+
+.event-buttons input {
+    background-color: #3D3D3D; /* 버튼 배경 색상 */
+    color: #FFFFFF; /* 버튼 텍스트 색상 */
+    border: none; /* 버튼 경계 제거 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    padding: 10px 20px; /* 버튼 내 여백 */
+    margin: 3px; /* 버튼 간 여백 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    font-size: 14px; /* 폰트 크기 */
+    font-family: 'NanumSquareNeo', Arial, sans-serif;
+}
+
+.event-buttons input:hover {
+    background-color: #303030; /* 호버 시 배경 색상 변경 */
+}
+</style>
+
+
+<script type="text/javascript">
+	function is_delete() {
+		if(confirm("삭제하시겠습니까?")) {
+			location.href='eventDelete?seq=[[${seq}]]&pg=[[${pg}]]';
+		}
+	}	
+</script>
+
+<body>
+    <div th:replace="~{layouts/header}"></div>
+	<main>
+    <div class="event-container">
+        <h2>[[${event.eventsubject}]]</h2>
+        <div class="event-header">
+            <span><strong>작성자 </strong><span>[[${event.eventname}]] |</span></span>
+            <span><strong>조회수 </strong><span>[[${event.eventhit}]] |</span></span>
+            <span><strong>등록일 </strong><span>[[${event.logtime}]]</span></span>
+        </div>
+        <div class="event-content">
+            <img th:src="@{car/} + ${event.eventimg}" width="800" height="300">
+            <div th:utext="${event.eventcontent}"></div>
+        </div>
+        <div class="event-buttons">
+            <input type="button" value="목록" th:onclick="location.href='eventList?pg=[[${pg}]]'">
+            <input type="button" value="수정" th:if="${userId == 'admin'}" th:onclick="location.href='eventModifyForm?seq=[[${event.seq}]]&pg=[[${pg}]]'">
+            <input type="button" value="삭제" th:if="${userId == 'admin'}" onclick="is_delete()">
+        </div>
+    </div>
+	</main>
+    <div th:replace="~{layouts/footer}"/>
+</body>

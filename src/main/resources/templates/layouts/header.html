@@ -1,0 +1,302 @@
+<head>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<style>
+@font-face {
+    font-family: 'NanumSquareNeo';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.ttf) format("truetype");
+}
+@font-face {
+    font-family: 'NanumSquareNeoBold';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.ttf) format("truetype");
+}
+@font-face {
+    font-family: 'NanumSquareNeoExtraBold';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.ttf) format("truetype");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'NanumSquareNeo', Arial, sans-serif;
+    min-width: 1200px; /* 고정된 최소 너비 설정 */
+    overflow-x: auto; /* 가로 스크롤 활성화 */
+}
+
+/* 헤더 스타일 */
+header {
+    position: relative;
+	height: 150px; /* 고정된 높이 설정, 줄임 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.header-container {
+    width: 1000px; /* 고정된 너비 설정 */
+    gap: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 500px; /* 중앙에 고정 */
+}
+
+.logo {
+    width: 200px; /* 로고의 고정 너비 */
+    height: auto; /* 높이는 비율에 맞게 조정 */
+}
+
+/* 검색창 크기 고정 */
+.gnb_search {
+    display: flex;
+    align-items: center;
+    width: 500px; /* 검색창의 고정 너비 */
+}
+
+.gnb_search fieldset {
+    position: relative;
+    padding: 0;
+    border: 0;
+    margin-right: 20px;
+    display: flex;
+    width: 100%;
+}
+
+.gnb_search input {
+    width: 100%; /* 검색 입력창이 검색 영역 전체를 차지 */
+    height: 50px; /* 검색창의 높이 */
+    padding: 0 10px;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+    color: #000000;
+}
+
+.gnb_search input::placeholder {
+    color: #b2b2b2;
+}
+
+.gnb_search input:focus {
+    border-color: #B3B3B3;
+    outline: none;
+}
+
+.gnb_search button {
+    width: 50px;
+    height: 50px; /* 버튼 높이 검색창에 맞춤 */
+    border-radius: 0 5px 5px 0;
+    background-color: #3D3D3D;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gnb_search .search-icon {
+    color: #ffffff;
+    font-size: 1.2em;
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    width: 200px; /* 고정된 너비 설정 */
+    justify-content: flex-end; /* 오른쪽 정렬 */
+}
+
+.auth-buttons button {
+    width: 100px; /* 각 버튼의 고정된 너비 */
+    height: 50px; /* 버튼 높이 */
+    font-size: 16px;
+    border: 1px solid #3D3D3D;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'NanumSquareNeoBold', Arial, sans-serif;
+}
+
+/* 로그인 버튼 */
+.auth-buttons .login-btn {
+    background-color: #3D3D3D;
+    color: white;
+    border-radius: 5px 0 0 5px;
+}
+
+/* 회원가입 버튼 */
+.auth-buttons .signup-btn {
+    background-color: white;
+    color: #3D3D3D;
+    border-radius: 0 5px 5px 0;
+}
+
+.auth-buttons .signup-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.auth-buttons .login-btn:hover {
+    background-color: #303030;
+}
+.logout-btn {
+    width: 100px; /* 각 버튼의 고정된 너비 */
+    height: 50px; /* 버튼 높이 */
+    font-size: 16px;
+    border: 1px solid #3D3D3D;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'NanumSquareNeoBold', Arial, sans-serif;
+	background-color: white;
+    color: #3D3D3D;
+    border-radius: 5px;
+}
+.logout-btn:hover {
+    background-color: #f0f0f0;
+}
+/* 네비게이션 스타일 */
+.menu {
+    background-color: #3D3D3D;
+    padding: 5px 0;
+    margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 메뉴 스타일 */
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 1200px; /* 고정된 너비 설정 */
+}
+
+nav ul li {
+    margin: 0 40px;
+    position: relative;
+}
+
+nav ul li a {
+    font-family: 'NanumSquareNeoBold', Arial, sans-serif;
+    font-size: 16px; /* 고정된 폰트 크기 설정 */
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 메뉴 항목의 호버 효과 */
+nav ul li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+/* 메뉴 항목의 호버 상태에서 밑줄 애니메이션 */
+nav ul li a:hover {
+    background-color: #303030;
+    color: white;
+}
+
+nav ul li a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* 활성화된 메뉴 항목 */
+nav ul li.active a {
+    background-color: #303030;
+    color: white;
+}
+
+nav ul li.active a::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+</style>
+
+<body>
+    <header>
+        <div class="header-container">
+        	<a id="mainLogo" href="#" onclick="location.href='/main'">
+	         	<img src="/image/logo.jpg" title="카셀 로고" alt="카셀 로고" class="logo" />
+	         </a>
+	        <form action="/search_car">
+            <div class="gnb_search">
+            
+            <!-- 0906 추가 -->
+                <fieldset>
+                    <input type="text" name="search" placeholder="차량을 검색해보세요"
+                    		th:value="${re_search != null ? re_search : ''}" />
+                    <button type="submit"><i class="fas fa-search search-icon"></i></button>
+                </fieldset>
+            <!-- 0906 추가 -->
+                
+            </div>
+            </form>
+            <th:block th:if="${session.Userid == null}">
+            <div class="auth-buttons">
+                <button type="button" class="login-btn" onclick="location.href='/member/loginForm'">로그인</button>
+                <button type="button" class="signup-btn" onclick="location.href='/member/joinForm'">회원가입</button>
+            </div>
+            </th:block>
+            <th:block th:if="${session.Userid != null}">
+            <div class="auth-buttons" align="center">
+            	<button type="button" class="logout-btn" onclick="location.href='/member/logout'">로그아웃</button>
+            </div>
+            </th:block>
+        </div>
+        <nav class="menu">
+        	<ul>
+                <li><a href="/newcarList">신차</a></li>
+                <li><a href="/oldcarList">중고차</a></li>
+                <th:block th:if="${session.Userid == null || session.UserType==0}">
+	            	<li><a href="/car/sellMyCar">내 차팔기</a></li>
+	            </th:block>
+                <li><a href="/QnA/QnAList">커뮤니티</a></li>
+                <li><a href="/eventList">이벤트</a></li>
+                <th:block th:if="${session.UserType == 0}">
+                <li><a href="/member/userView">마이페이지</a></li>
+                </th:block>
+                <th:block th:if="${session.UserType == 1}">
+                <li><a href="/member/adminView">관리자페이지</a></li>
+                </th:block>
+            </ul>
+        </nav>
+    </header>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const menuItems = document.querySelectorAll('nav ul li a');
+
+    menuItems.forEach(item => {
+        // 메뉴 항목의 경로가 현재 경로와 일치하는지 확인
+        if (item.getAttribute('href') === currentPath) {
+            item.parentElement.classList.add('active');
+        }
+    });
+});
+</script>

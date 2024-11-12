@@ -1,0 +1,9 @@
+<script type="text/javascript">
+	if("[[${result}]]" == "true"){
+		//window.open("/member/pwmodifyForm?id=[[${id}]]","","width=550 height=240");
+		//location.href = "/member/findMemberForm?menu=pw&error=0";
+		location.href = "/member/pwmodifyForm?id=[[${id}]]";
+	}else{
+		location.href = "/member/findMemberForm?menu=pw&error=1";
+	}
+</script>

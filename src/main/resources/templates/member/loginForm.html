@@ -1,0 +1,94 @@
+
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<style type="text/css">
+/* 로그인 화면 스타일 */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 555px;
+    background-color: #f7f7f7;
+}
+
+.login-box {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    width: 80%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.form-group button {
+    width: 80%;
+    background-color: #3D3D3D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    height: 50px;
+
+}
+
+.form-group button:hover {
+    background-color: #2a2a2a;
+}
+
+.login-links {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login-links .inform {
+    color: #3D3D3D;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.login-links .inform:hover {
+    text-decoration: underline;
+}
+</style>
+<div th:replace="~{layouts/header}"></div>
+
+<div class="login-container">
+    <div class="login-box">
+        <form action="/member/login" name="loginform" method="post">
+            <div class="form-group">
+                <input type="text" id="id" name="id" placeholder="아이디" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="pw" name="pw" placeholder="비밀번호" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="login">로그인</button>
+            </div>
+        </form>
+        <div class="login-links">
+            <a class="inform" href="/member/findMemberForm?menu=id">아이디 찾기</a>
+            &nbsp;|&nbsp;
+            <a class="inform" href="/member/findMemberForm?menu=pw">비밀번호 찾기</a>
+            &nbsp;|&nbsp;
+            <a class="inform" href="/member/joinForm">회원가입</a>
+        </div>
+    </div>
+</div>
+<div th:replace="~{layouts/footer}"></div>

@@ -1,0 +1,342 @@
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<div th:replace="~{layouts/header}" />
+<style type="text/css">
+h5{
+	border-bottom: 10px;
+}
+.join-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    position: relative;
+    margin-top: 30px; /* Container margin */
+    padding: 20px;
+}
+.upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    position: relative;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+.reservation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    position: relative;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.join-container::before {
+    content: '';
+    position: absolute;
+    top: -50px; /* Adjust to match margin */
+    left: -50px; /* Adjust to match margin */
+    right: -50px; /* Adjust to match margin */
+    bottom: -50px; /* Adjust to match margin */
+    background-color: #f7f7f7; /* Match background color */
+    z-index: -1; /* Place behind container */
+}
+
+    .join-box {
+        width: 600px;
+        padding: 20px;
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        background-color: #FFFFFF;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        padding: 10px;
+        vertical-align: middle;
+        border: none;
+    }
+	/* 비밀번호 확인 이미지와 비밀번호 입력 칸 사이의 간격 추가 */
+	.form-group img {
+	    vertical-align: middle;
+	    margin-left: 10px; /* 이미지와 입력 필드 사이의 간격 추가 */
+	}
+	
+	/* 중복확인 버튼과 입력 필드 사이의 간격 추가 */
+	td div {
+	    display: flex;
+	    align-items: center;
+	}
+	
+	td input[type="text"], td input[type="password"], td select {
+	    margin-right: 10px; /* 입력 필드와 버튼 사이의 간격 추가 */
+	}
+    .form-control {
+        width: calc(100% - 150px); /* Adjust width to fit button in the same line */
+        padding: 10px;
+        border: 1px solid #E0E0E0;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline-color: #3D3D3D !important;
+    }
+
+#reset{
+	background-color: #FFFFFF;
+	color: #3D3D3D;
+	border-color: #3D3D3D;
+	outline-color: #3D3D3D !important;
+}
+#submit{
+	background-color: #3D3D3D;
+	color: #FFFFFF;
+	border-color: #3D3D3D;
+	outline-color: #3D3D3D !important;
+}
+
+
+    .form-group {
+        margin-bottom: 10px;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: calc(100% - 150px); /* Adjust width to fit button in the same line */
+        padding: 10px;
+        border: 1px solid #E0E0E0;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline-color: #3D3D3D !important;
+    }
+
+    .form-group .btn {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #3D3D3D;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .form-group .btn:hover {
+        background-color: #2a2a2a;
+    }
+
+    .email-phone-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .email-phone-group input {
+        margin-right: 5px;
+    }
+
+    .email-phone-group select {
+        margin-left: 5px;
+    }
+
+    .form-group img {
+        vertical-align: middle;
+        margin-left: 10px; /* Add gap between image and input field */
+    }
+</style>
+
+
+<div class="all_container">
+<div class="join-container">
+    <div class="join-box">
+            <input type="hidden" name="idChecknum" id="idChecknum"
+					value="0">
+            <h5>회원 정보</h5>
+            <table>
+                <!-- 이름 -->
+                <tr>
+                    <th>이름</th>
+                    <td>
+                        [[${user.name}]]
+                    </td>
+                </tr>
+                
+                <!-- 아이디 -->
+                <tr>
+                    <th>아이디</th>
+                    <td>
+						[[${user.id}]]
+                    </td>
+                </tr>
+
+                <!-- 이메일 -->
+                <tr>
+                    <th>이메일</th>
+                    <td class="email-phone-group">
+                        [[${user.email1}]] @ [[${user.email2}]]
+                    </td>
+                </tr>
+
+                <!-- 전화번호 -->
+                <tr>
+                    <th>전화번호</th>
+                    <td class="email-phone-group">
+                        [[${user.tel1}]] - [[${user.tel2}]]- [[${user.tel3}]]
+                    </td>
+                </tr>
+
+                <!-- 주소 -->
+                <tr>
+                    <th>주소</th>
+                    <td>
+                        [[${user.addr}]]
+                    </td>
+                </tr>
+
+                <!-- 버튼들 -->
+                <tr>
+                    <td colspan="2" align="right">
+                    	<button type="button" class="btn btn-primary" id="submit" onclick="location.href='/deleteAccount'">회원 탈퇴</button>
+                        <button type="button" class="btn btn-primary" id="submit" onclick="location.href='/member/modifyForm'">회원정보 수정</button>
+                    </td>
+                </tr>
+            </table>
+    </div>
+</div>
+<div class="upload-container">
+	<div class="join-box">
+		<h5>내 등록 차량 관리</h5>
+		
+		<th:block th:if="${ADSList.size() == 0}">
+		<br>
+			<p align="center"><strong>등록된 차량이 없습니다.</strong></p>
+		<br>
+		</th:block>
+		
+		<th:block th:if="${ADSList.size() != 0}">
+			<div th:each="admin : ${ADSList}">
+				<table>
+					<tr>
+						<th>NO</th>
+						<td>[[${admin.carnum}]]</td>
+					</tr>
+					<tr>
+						<th>차종</th>
+						<td>[[${admin.modelname}]]</td>
+					</tr>
+					<tr>
+						<th>판매점</th>
+						<td>[[${admin.shopname}]]</td>
+					</tr>	
+					<tr>
+						<th>등록일자</th>
+						<td>[[${admin.time}]] </td>
+					</tr>
+					
+					<th:block th:if="${admin.status == 0}">
+						<tr>
+							<th>중고가</th>
+							<td>
+        					<div style="display: flex; justify-content: space-between; align-items: center;">
+            					<span style="color: red;">감정 대기중</span>
+            				<a th:href="@{/car/userWantInfo(seq=${admin.seq})}">
+                				<input type="button" class="btn btn-dark btn-sm" value="상세보기">
+            				</a>
+        					</div>
+    						</td>
+						</tr>
+					</th:block>
+					<th:block th:unless="${admin.status == 0}">
+						<tr>
+							<th>중고가</th>
+							<td>
+        					<div style="display: flex; justify-content: space-between; align-items: center;">
+            					<span style="color: green;">감정 완료</span>
+            				<a th:href="@{/car/userWantInfo(seq=${admin.seq})}">
+                				<input type="button" class="btn btn-dark btn-sm" value="상세보기">
+            				</a>
+        					</div>
+    						</td>
+						</tr>
+					</th:block>	
+				</table>
+				<hr>
+			</div>
+		</th:block>
+	</div>
+</div>
+
+<div class="reservation-container">
+	<div class="join-box">
+		<h5>구매 상담 예약</h5>
+		<th:block th:if="${ADBList.size() == 0}">
+		<br>
+			<p align="center"><strong>예약 내역이 없습니다.</strong></p>
+		<br>
+		</th:block>
+		<th:block th:if="${ADBList.size() != 0}">
+			<div th:each="admin : ${ADBList}">
+				<table>
+					<tr>
+						<th>NO</th>
+						<td>[[${admin.carnum}]]</td>
+					</tr>
+					<tr>
+						<th>차종</th>
+						<td>[[${admin.modelname}]]</td>
+					</tr>
+					<tr>
+						<th>판매점</th>
+						<td>[[${admin.shopname}]]</td>
+					</tr>	
+					<tr>
+						<th>등록일자</th>
+						<td>[[${admin.time}]] </td>
+					</tr>
+					
+					<th:block th:if="${admin.status == 0}">
+						<tr>
+							<th>상담 여부</th>
+							<td>
+        					<div style="display: flex; justify-content: space-between; align-items: center;">
+            					<span style="color: red;">상담 예약중</span>
+            				<a th:href="@{/car/userWantInfo(seq=${admin.seq})}">
+                				<input type="button" class="btn btn-dark btn-sm" value="상세보기">
+            				</a>
+        					</div>
+    						</td>
+						</tr>
+					</th:block>
+					<th:block th:unless="${admin.status == 0}">
+						<tr>
+							<th>상담여부</th>
+							<td>
+							<div style="display: flex; justify-content: space-between; align-items: center;">
+            					<span style="color: green;">상담 예약 승인</span>
+            				<a th:href="@{/car/userWantInfo(seq=${admin.seq})}">
+                				<input type="button" class="btn btn-dark btn-sm" value="상세보기">
+            				</a>
+        					</div>
+    						</td>
+							
+						</tr>
+					</th:block>	
+				</table>
+				<hr>
+			</div>
+		</th:block>
+	</div>
+</div>
+
+
+</div>
+
+
+
+
+<div th:replace="~{layouts/footer}" />

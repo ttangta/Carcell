@@ -1,0 +1,105 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/QnAList.css">
+
+<style>
+
+.total{
+	width:80%;
+	min-height: 800px;
+    height: auto; /* 전체 화면 높이 */
+}
+
+</style>
+
+<script type="text/javascript">
+	// 로그인 상태검사
+	function isLogin(seq) {
+		if ("[[${Userid}]]" == "" || "[[${Userid}]]" == "null") {
+			alert("먼저 로그인을 해주세요");
+		} else {
+			location.href = "QnAView?seq=" + seq + "&pg=" + "[[${pg}]]";
+		}
+	}
+
+	// 로그인 상태 검증
+	function checkLoginAndRedirect() {
+		const userId = /*[[${Userid}]]*/''; // 서버에서 UserId 값을 가져옵니다.
+		if (userId) {
+			window.location.href = "QnAWriteForm"; // 로그인 상태일 때 이동
+		} else {
+			alert("먼저 로그인을 해주세요"); // 로그인 안 된 경우 경고
+		}
+	}
+</script>
+
+<body>
+	<!-- header 불러오기 -->
+	<div th:replace="~{layouts/header}"/>
+	<br>
+	<div class="total" align="center">
+
+		<!-- 상단 버튼 및 검색 박스 -->
+		<div class="d-flex justify-content-between align-items-center mb-3"
+			id="header_search">
+			<form action="/QnA/QnAList" method="get" class="search-container">
+				<input type="text" name="search" placeholder="검색어를 입력하세요"
+					class="form-control">
+				<button type="submit" class="btn btn-search">검색</button>
+			</form>
+			<a th:if="${Userid != null}" href="QnAWriteForm"
+				class="btn btn-write ms-auto">글쓰기</a>
+		</div>
+
+
+		<!-- QnA 테이블 -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th>조회수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="QnA : ${list}">
+					<td>[[${QnA.seq}]]</td>
+					<td><a th:href="@{/QnA/QnAView(seq=${QnA.seq}, pg=${pg})}"
+						id="subjectA">[[${QnA.subject}]]</a></td>
+					<td>[[${QnA.name}]]</td>
+					<td>[[${QnA.logtime}]]</td>
+					<td>[[${QnA.hit}]]</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div>
+			<!-- 페이지 네비게이션 -->
+		<nav aria-label="Page navigation" th:if="${totalP > 0}">
+			<ul class="pagination">
+				
+				<li class="page-item" th:classappend="${pg == 1} ? 'disabled'">
+					<a class="page-link paging" th:href="@{/QnA/QnAList(pg=${pg - 1})}"
+					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+				</a>
+				</li>
+
+				<li th:each="i : ${#numbers.sequence(startPage, endPage)}"
+					th:classappend="${pg == i} ? 'active'"><a class="page-link"
+					th:href="@{/QnA/QnAList(pg=${i})}">[[${i}]]</a></li>
+
+				<li class="page-item" th:classappend="${pg == totalP} ? 'disabled'">
+					<a class="page-link paging" th:href="@{/QnA/QnAList(pg=${pg + 1})}"aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<!-- footer 불러오기 -->
+	<div th:replace="~{layouts/footer}"/>
+</body>
+</html>

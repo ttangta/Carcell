@@ -1,0 +1,297 @@
+<div th:replace="~{layouts/header}"></div>
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<style type="text/css">
+        h4 {
+		    text-align: center;
+		    margin-bottom: 20px;
+		}
+        .um_container {
+        	font-family: 'NanumSquareNeo', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            position: relative;
+            background-color: #f7f7f7; /* Light gray background */
+            margin-top: 20px;
+            padding: 10px;
+        }
+        .main {
+            width: 600px;
+            padding: 20px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background-color: #FFFFFF; /* White background for the form */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px;
+            vertical-align: middle;
+            border: none;
+        }
+        .a{
+        	margin: 0 10px;
+        	text-decoration: none;
+        }
+        /* 비밀번호 확인 이미지와 비밀번호 입력 칸 사이의 간격 추가 */
+        .form-group img {
+            vertical-align: middle;
+            margin-left: 10px; /* 이미지와 입력 필드 사이의 간격 추가 */
+        }
+        /* 중복확인 버튼과 입력 필드 사이의 간격 추가 */
+        td div {
+            display: flex;
+            align-items: center;
+        }
+        td input[type="text"], td input[type="password"], td select {
+            margin-right: 10px; /* 입력 필드와 버튼 사이의 간격 추가 */
+        }
+        .form-control {
+            width: calc(100% - 150px); /* Adjust width to fit button in the same line */
+            padding: 10px;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline-color: #3D3D3D !important;
+        }
+        #cancel {
+            background-color: #FFFFFF;
+            color: #3D3D3D;
+            border-color: #3D3D3D;
+            outline-color: #3D3D3D !important;
+        }
+        #submit {
+            background-color: #3D3D3D;
+            color: #FFFFFF;
+            border-color: #3D3D3D;
+            outline-color: #3D3D3D !important;
+        }
+        .radio-group {
+            display: flex;
+            align-items: center;
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+        .radio-group label {
+            margin-right: 20px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group input,
+        .form-group select {
+            width: calc(100% - 150px); /* Adjust width to fit button in the same line */
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline-color: #3D3D3D !important;
+        }
+        .form-group .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #3D3D3D;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .form-group .btn:hover {
+            background-color: #2a2a2a;
+        }
+        .email-phone-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group img {
+            vertical-align: middle;
+            margin-left: 10px; /* Add gap between image and input field */
+        }
+        /* Read-only styling */
+        .readonly {
+            background-color: #e9ecef; /* Light gray background for read-only fields */
+            cursor: not-allowed; /* Show not-allowed cursor for read-only fields */
+        }
+</style>
+<script type="text/javascript">
+	window.onload = function(){
+		setTimeout(function(){
+			var img = document.getElementById("imgCheck");
+			img.setAttribute("src","/img/x.png");
+		},100);
+	}
+	function checkPw(){
+		var img = document.getElementById("imgCheck");
+		var pw = document.modify.pw.value;
+		var re_pw = document.modify.re_pw.value;
+		if(pw == re_pw){
+			img.setAttribute("src","/img/o.png");
+		}else{
+			img.setAttribute("src","/img/x.png");
+		}
+	}
+	function checkInput(){
+		var frm = document.modify;
+		var pw = document.modify.pw.value;
+		var re_pw = document.modify.re_pw.value;
+		if(!frm.pw.value.trim()){
+			alert("비밀번호를 입력하세요");
+			frm.pw.focus();
+			return false
+		}else if(!frm.re_pw.value.trim()){
+			alert("비밀번호를 한 번 더 입력해주세요");
+			frm.re_pw.focus();
+			return false;
+		}else if(pw != re_pw){
+			alert("비밀번호가 서로 다릅니다");
+			return false;
+		}else if(!frm.email1.value.trim()){
+			alert("이메일을 입력해주세요");
+			frm.email1.focus();
+			return false;
+		}else if(!frm.tel2.value.trim()){
+			alert("전화번호를 입력해주세요");
+			frm.tel2.focus();
+			return false;
+		}else if(!frm.tel3.value.trim()){
+			alert("전화번호를 입력해주세요");
+			frm.tel2.focus();
+			return false;
+		}else if(!frm.addr.value.trim()){
+			alert("주소를 입력해주세요");
+			frm.addr.focus();
+			return false;
+		}
+		frm.submit();
+	}
+
+</script>
+<div class="um_container">
+	<div class="main">
+		<form action="/member/modify" enctype="multipart/form-data" name="modify" method="post">
+			<input type="hidden" name="type" th:value="${user.type}">			
+            <h4>회원정보 수정</h4>
+            <table>
+                <!-- 이름 -->
+                <tr>
+                    <td>이름</td>
+                    <td>
+                        <input type="text" name="name" class="form-control readonly" readonly="readonly" th:value="${user.name}">
+                    </td>
+                </tr>
+                
+                <!-- 아이디 -->
+                <tr>
+                    <td>아이디</td>
+                    <td>
+                        <div>
+                            <input type="text" name="id" id="id" class="form-control readonly" readonly="readonly" th:value="${user.id}">
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- 비밀번호 -->
+                <tr>
+                    <td>비밀번호</td>
+                    <td>
+                        <input type="password" name="pw" class="form-control" required="required" placeholder="비밀번호">
+                    </td>
+                </tr>
+
+                <!-- 비밀번호 재확인 -->
+                <tr>
+                    <td>비밀번호 재확인</td>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <input type="password" name="re_pw" class="form-control" onblur="checkPw()" placeholder="비밀번호 재확인">
+                            <img id="imgCheck" src="" width="20px" height="20px">
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <!-- 이메일 -->
+                <tr>
+                    <td>이메일</td>
+                    <td class="email-phone-group">
+                        <input type="text" name="email1" id="email1" class="form-control" th:value="${user.email1}">
+                        <p class="a">@</p>
+                        <select name="email2" id="email2" class="form-control">
+							<th:block th:if="${user.email2 == 'gmail.com'}">
+								<option th:value="${user.email2}">[[${user.email2}]]</option>
+								<option value="naver.com">naver.com</option>
+								<option value="hamail.net">hamail.net</option>
+							</th:block>
+							<th:block th:if="${user.email2 == 'naver.com'}">
+								<option th:value="${user.email2}">[[${user.email2}]]</option>
+								<option value="gmail.com">gmail.com</option>
+								<option value="hamail.net">hamail.net</option>
+							</th:block>
+							<th:block th:if="${user.email2 == 'hanmail.net'}">
+								<option th:value="${user.email2}">[[${user.email2}]]</option>
+								<option value="naver.com">naver.com</option>
+								<option value="gmail.com">gmail.com</option>
+							</th:block>
+                        </select>
+                    </td>
+                </tr>
+
+                <!-- 전화번호 -->
+                <tr>
+                    <td>전화번호</td>
+                    <td class="email-phone-group">
+                        <select name="tel1" class="form-control">
+							<th:block th:if="${user.tel1 =='010'}">
+								<option th:value="${user.tel1}">[[${user.tel1}]]</option>
+								<option value="011">011</option>
+								<option value="012">012</option>
+							</th:block>
+							<th:block th:if="${user.tel1 =='011'}">
+								<option th:value="${user.tel1}">[[${user.tel1}]]</option>
+								<option value="010">010</option>
+								<option value="012">012</option>
+							</th:block>
+							<th:block th:if="${user.tel1 =='012'}">
+								<option th:value="${user.tel1}">[[${user.tel1}]]</option>
+								<option value="010">010</option>
+								<option value="012">011</option>
+							</th:block>
+                        </select>
+                        <p class="a">-</p>
+                        <input type="text" name="tel2" size="4" maxlength="4" class="form-control" th:value="${user.tel2}">
+                        <p class="a">-</p>
+                        <input type="text" name="tel3" size="4" maxlength="4" class="form-control" th:value="${user.tel3}">
+                    </td>
+                </tr>
+
+                <!-- 주소 -->
+                <tr>
+                    <td>주소</td>
+                    <td>
+                        <input type="text" name="addr" class="form-control" th:value="${user.addr}">
+                    </td>
+                </tr>
+
+                <!-- 버튼들 -->
+                <tr>
+                    <td colspan="2" align="center">
+                        <button type="button" class="btn btn-primary" id="cancel" onclick="history.back()">취소</button>
+                        <input type="submit" class="btn btn-primary" id="submit" onclick="checkInput()" value="저장">
+                    </td>
+                </tr>
+            </table>
+		</form>
+	</div>
+</div>
+
+<div th:replace="~{layouts/footer}"></div>

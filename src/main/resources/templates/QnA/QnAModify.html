@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	window.onload = function(){
+		setTimeout(function(){
+			if("[[${QnA}]]" == null){
+				alert("수정 실패");
+				history.back();
+			} else {
+				alert("수정 성공");
+				location.href='/QnA/QnAView?pg=[[${pg}]]&seq=[[${seq}]]';
+			}
+		}, 100);
+	}
+</script>
+</head>
+<body>
+
+</body>
+</html>

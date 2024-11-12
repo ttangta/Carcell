@@ -1,0 +1,239 @@
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+	function checkMaker() {
+		var m = document.getElementById("maker");
+		var maker = m.value;
+		var w = document.getElementById("writeMaker");
+		if (maker == "기타") {
+			w.style.display = "inline-block";
+			w.disabled = false;
+		} else {
+			w.value = "";
+			w.style.display = "none";
+			w.disabled = true;
+		}
+	}
+	function sellMyCarInputCheck() {
+		var frm = document.sellMyCarForm;
+		var m = document.getElementById("maker");
+		var maker = m.value;
+		if (!frm.modelname.value.trim()) {
+			frm.modelname.focus();
+			alert("차량 모델을 입력해주세요");
+			return false;
+		} else if (maker == "기타" && !frm.writeMaker.value.trim()) {
+			frm.writeMaker.focus();
+			alert("제조사를 입력해주세요");
+			return false;
+		} else if (frm.img.value == "" || frm.img.value == null) {
+			alert("차량사진을 등록해주세요");
+			return false;
+		}  else if (frm.region.value == "" || frm.region.value == null) {
+			alert("판매점 지역을 선택해주세요");
+			return false;
+		}  else if (frm.pointSelect.value == "" || frm.pointSelect.value == null) {
+			alert("판매점 지점을 선택해주세요");
+			return false;
+		}
+		var fuelChecked = false;
+		for (var i = 0; i < frm.fuelType.length; i++) {
+		    if (frm.fuelType[i].checked) {
+		        fuelChecked = true;
+		        break;
+		    }
+		}
+		if (!fuelChecked) {
+		    frm.caryear.focus();
+		    alert("유종을 하나이상 체크해주세요");
+		    return false;
+		}
+		frm.submit();
+	}
+	
+	//판매점 가져오기
+	function selectShop() {
+		const region = $('#region').val();
+		const pointSelect = $('#pointSelect');
+		pointSelect.empty().append('<option value="">지점 선택</option>');
+		
+		if(region){
+			pointSelect.show();
+			
+	        // AJAX 요청
+	        $.ajax({
+	            url: '/shopOptionAdd', // 컨트롤러의 URL
+	            method: 'GET',
+	            data: { shoploca: region },
+	            success: function(data) {
+	                // 받은 데이터 처리
+	                data.options.forEach(option => {
+	                	pointSelect.append(new Option(option, option));
+	                });
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('Error fetching options:', error);
+	            }
+	        });
+		} else {
+			pointSelect.hide();
+	    }
+
+	}
+	
+	
+</script>
+<style type="text/css">
+
+    /* 폼 컨테이너 스타일 */
+    .form-container {
+        height: 600px; /* 컨테이너 높이 설정 */
+        width: 500px; /* 컨테이너 너비 설정 */
+        padding: 20px; /* 내부 여백 설정 */
+        background-color: #FFFFFF; /* 배경색 흰색 */
+    }
+
+    /* 각 폼 행 스타일 */
+    .form-row {
+        display: flex; /* Flexbox 사용하여 가로 배치 */
+        margin-bottom: 10px; /* 각 행 사이의 간격 설정 */
+    }
+
+    /* 라벨 스타일 */
+    .form-label {
+        width: 100px; /* 라벨의 고정 너비 설정 */
+        display: flex; /* Flexbox 사용 */
+        align-items: center; /* 세로 정렬 */
+    }
+
+    /* 입력 필드 스타일 */
+    .form-input {
+        flex: 1; /* 남은 공간을 채우도록 설정 */
+    }
+
+    /* 입력 필드 및 선택 박스 스타일 */
+    .form-input input,
+    .form-input select {
+        width: 250px; /* 부모 요소의 너비를 80%로 설정 */
+        box-sizing: border-box; /* 패딩과 테두리를 포함하여 전체 너비 계산 */
+        height: 35px;
+    }
+    .form-oil{
+    	margin-left: 60px;
+    }
+
+
+    /* 총합 스타일 */
+    .total {
+        display: flex; /* Flexbox 사용 */
+        flex-direction: row; /* 가로 방향 정렬 */
+        justify-content: space-between; /* 양쪽 끝 정렬 */
+        align-items: flex-start; /* 상단 정렬 */
+        width: 100%; /* 전체 너비 설정 */
+        padding: 20px; /* 내부 여백 설정 */
+        background-color: #FFFFFF; /* 배경색 흰색 */
+        border-radius: 8px; /* 모서리 둥글게 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    }
+
+    /* 섹션 스타일 */
+    .section {
+        flex: 1; /* 남은 공간을 채우도록 설정 */
+    }
+
+
+</style>
+<div align="center">
+	<div class="form-container">
+		<br>
+		<h3 align="center">신규 차량 등록</h3>
+		<br>
+		<form action="/newsellCar" method="post" enctype="multipart/form-data" name="sellMyCarForm">
+			<input type="hidden" th:value="${session.Userid}" name="sellerId">
+			<input type="hidden" name="condition" value="new">
+			<input type="hidden" name="sellerid" th:value="${session.Userid}">
+				 
+			<div class="form-row">
+                <div class="form-label">차량 모델</div>
+                <div class="form-input">
+                    <input type="text" name="modelname">
+                </div>
+            </div>
+			<div class="form-row">
+                <div class="form-label">제조사</div>
+                <div class="form-input">
+                    <select name="maker" id="maker" onchange="checkMaker()">
+                        <option value="현대">현대</option>
+                        <option value="기아">기아</option>
+                        <option value="제네시스">제네시스</option>
+                        <option value="BMW">BMW</option>
+                        <option value="KGM">KGM</option>
+                        <option value="쉐보레">쉐보레</option>
+                        <option value="르노코리아">르노코리아</option>
+                        <option value="벤츠">벤츠</option>
+                        <option value="테슬라">테슬라</option>
+                        <option value="기타">기타</option>
+                    </select>
+                    <input type="text" name="maker1" id="writeMaker" size="7" placeholder="ex) 현대" style="display: none" value="">
+                </div>
+            </div>
+			<div class="form-row">
+                <div class="form-label">차량 크기</div>
+                <div class="form-input">
+                    <select name="carsize">
+                        <option value="경차">경차</option>
+                        <option value="소형">소형</option>
+                        <option value="중형">중형</option>
+                        <option value="대형">대형</option>
+                        <option value="준중형">준중형</option>
+                        <option value="준대형">준대형</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">가격</div>
+                <div class="form-input">
+                    <input type="text" name="price" style="margin-left:35px; text-align:rignt;"> 만원
+                </div>
+            </div>
+			<div class="form-row">
+                <div class="form-label">유종</div>
+                <div class="form-oil" align="center">
+    				<label><input type="checkbox" name="fuelType" value="가솔린"> 가솔린 </label>
+    				<label><input type="checkbox" name="fuelType" value="하이브리드"> 하이브리드 </label>
+    				<br>
+    				<label style="margin-right: 20px;"><input type="checkbox" name="fuelType" value="디젤"> 디젤 </label>
+        			<label style="margin-right: 20px;"><input type="checkbox" name="fuelType" value="LPG"> LPG </label>
+    				<label><input type="checkbox" name="fuelType" value="전기"> 전기 </label>
+    			</div>
+    		</div>
+			<div class="form-row">
+                <div class="form-label">판매점</div>
+                <div class="form-input">
+				<select id="region" name="region" onchange="selectShop()">
+						<option value="">지역 선택</option>
+						<option value="서울">서울</option>
+						<option value="경기">경기</option>
+						<option value="부산">부산</option>
+						<option value="광주">광주</option>
+				</select>
+				<select name="pointSelect" id="pointSelect" style="display: none;">
+						<option value="">지점 선택</option>
+				</select>
+				</div>
+			</div>
+			<div class="form-row">
+                <div class="form-label">차량사진</div>
+                <div class="form-input">
+                    <input type="file" name="img">
+                </div>
+            </div>
+			<br>
+            <div class="form-row">
+                <div class="form-input" style="text-align: center;">
+                    <input type="button" class="btn btn-dark btn-sm" value="신규 차량 등록" onclick="sellMyCarInputCheck();" style="font-size: 17px; background-color: 3D3D3D; width: 90%; height: 40px;">
+                </div>
+            </div>
+            </form>
+		</div>
+</div>

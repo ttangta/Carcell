@@ -1,0 +1,170 @@
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<style type="text/css">
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 수직 중앙 정렬을 추가할 경우 사용 */
+    flex-direction: column; /* 수직 정렬을 위해 사용 (필요에 따라) */
+    padding: 20px;
+}
+.button-container {
+    display: flex; /* 버튼들을 가로로 배치 */
+    gap: 10px; /* 버튼들 사이에 간격 추가 (필요시 변경 가능) */
+}
+.wait, .complete {
+    width: auto;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: 1px solid #3D3D3D;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'NanumSquareNeoBold', Arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #3D3D3D;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.wait:hover, .complete:hover {
+    background-color: #3D3D3D;
+    color: #FFFFFF;
+}
+
+.wait.active, .complete.active {
+    background-color: #3D3D3D; /* active 상태일 때 배경 회색 */
+    color: #FFFFFF; /* active 상태일 때 글씨 흰색 */
+}
+.main ul{
+	padding: 0;
+}
+.carlist {
+	width: 900px;
+	list-style-type: none;
+	border: 1px solid black;
+	padding: 10px;
+	margin: 5px 0; /* 항목 간 간격 */
+	justify-content: space-between; /* 양쪽으로 배치 */
+}
+
+.carinfo {
+	display: flex; /* Flexbox 사용 */
+	align-items: center; /* 수직 정렬 */
+	padding-left: 10px;
+}
+.cardetail {
+	width: 500px;
+	text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+.carright {
+    display: flex; /* Flexbox 사용 */
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    align-items: center; /* 가로 방향 중앙 정렬 */
+    width: 200px; /* 원하는 너비 설정 */
+}
+
+.carright input{
+	height: 35px; /* 버튼 높이 조절 */
+    font-size: 16px; /* 버튼 텍스트 크기 조절 */
+    padding: 0 15px; /* 버튼 좌우 여백 조절 */
+}
+.cardetail{
+	padding-left: 10px;
+}
+.carcenter{
+	width: 80px;
+	text-align: center;
+}
+
+.paging {color: #3D3D3D; text-decoration: none;}
+.currentPaging {color:#3D3D3D; text-decoration: none; font-weight: bold;}
+</style>
+
+<div class="main">
+		<h3 style="margin-bottom: 20px;">차량 구매 요청 리스트</h3>
+		<div class="button-container">
+	        <!-- 상태가 0일 때 'wait' 버튼에 active 클래스 적용 -->
+	        <input type="button" class="wait" th:classappend="${status == 0} ? 'active'" 
+	               value="승인 대기 목록" onclick="location.href='/car/newCarBuyAdminList?status=0'">
+	               
+	        <!-- 상태가 1일 때 'complete' 버튼에 active 클래스 적용 -->
+	        <input type="button" class="complete" th:classappend="${status == 1} ? 'active'" 
+	               value="승인 완료 목록" onclick="location.href='/car/newCarBuyAdminList?status=1'">
+		</div>
+		<th:block th:if="${ADlist.size() !=0}">
+		<ul th:each="admin : ${ADlist}">
+			<li class="carlist">
+				<div class="carinfo">
+					<div class="img">
+		         		<img th:src="@{../car/} + ${admin.carimage}" width="200" height="150">
+		         	</div>
+		         	<div class="cardetail">
+						<p>모델명 : <strong>[[${admin.modelname}]]</strong></p>
+						<p>판매점 명 : [[${admin.shopname}]]</p>
+						<p>상담신청자 : [[${admin.userid}]]</p>
+						<p>등록일자 : [[${admin.time}]]</p>
+					</div>
+					<div class="carcenter">
+						<th:block th:if="${admin.condition.equals('new')}">
+						<p style="font-size: 20px;"><strong>신규</strong></p>
+						</th:block>
+						<th:block th:unless="${admin.condition.equals('new')}">
+						<p style="font-size: 20px;"><strong>중고</strong></p>
+						</th:block>
+					</div>
+					<div class="carright">
+						<th:block th:if="${admin.status == 0}">
+						<p style="color: red;"><strong>승인대기중</strong></p>
+						</th:block>
+						<th:block th:if="${admin.status == 1}">
+						<p style="color: green;"><strong>승인 완료</strong></p>
+						</th:block>
+						<input type="button" class="wait" value="상세 정보" th:onclick="location.href='/car/newCheckCar?seq=[[${admin.seq}]]'"> 
+					</div>
+				</div>
+			</li>
+		</ul>
+<div align="center">
+<th:block th:if="${status == 0}">
+		<th:block th:if="${startPage > 3}">
+			[<a th:href="@{/car/newCarBuyAdminList(pg=${startPage-1})}" class="paging"> &lt;&lt; </a>]
+		</th:block>
+		<th:block th:each="page : ${#numbers.sequence(startPage,endPage)}">
+					<th:block th:if="${pg==page}">
+						[<a th:href="@{/car/newCarBuyAdminList(pg=${page})}" class="currentPaging">[[${page}]]</a>]
+					</th:block>
+					<th:block th:if="${pg!=page}">
+						[<a th:href="@{/car/newCarBuyAdminList(pg=${page})}" class="paging">[[${page}]]</a>]
+					</th:block>
+				</th:block>
+		
+		<th:block th:if="${endPage<totalPage}">
+			[<a th:href="@{/car/newCarBuyAdminList(pg=${endPage+1})}" class="paging"> >> </a>]
+		</th:block>
+</th:block>
+<th:block th:if="${status == 1}">
+		<th:block th:if="${startPage > 3}">
+			[<a th:href="@{/car/newCarBuyAdminList(pg=${startPage-1},status=1)}" class="paging"> &lt;&lt; </a>]
+		</th:block>
+		<th:block th:each="page : ${#numbers.sequence(startPage,endPage)}">
+					<th:block th:if="${pg==page}">
+						[<a th:href="@{/car/newCarBuyAdminList(pg=${page},status=1)}" class="currentPaging">[[${page}]]</a>]
+					</th:block>
+					<th:block th:if="${pg!=page}">
+						[<a th:href="@{/car/newCarBuyAdminList(pg=${page},status=1)}" class="paging">[[${page}]]</a>]
+					</th:block>
+				</th:block>
+		
+		<th:block th:if="${endPage<totalPage}">
+			[<a th:href="@{/car/newCarBuyAdminList(pg=${endPage+1},status=1)}" class="paging"> >> </a>]
+		</th:block>
+</div>
+</th:block>				
+<th:block th:if="${ADlist.size() ==0}">
+    <div style="height:600px;">
+    	<br>
+       	<h2 style="text-align: center; margin: 0 0 20px 40px;">대기중인 목록이 없습니다.</h2>
+    </div>
+</th:block>
+</div>

@@ -1,0 +1,341 @@
+<div th:replace="~{layouts/header}"></div>
+
+<style>
+main {
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    background-color: #F0F0F0; /* 배경 색상 설정 */
+    height: auto; /* 전체 화면 높이 */
+    padding: 10px;
+}
+.total{
+	width: 1000px;
+	padding: 20px;
+    background-color: #FFFFFF; /* 배경 색상 설정 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 부드러운 그림자 추가 */
+}
+.carlist {
+	width: 900px;
+	list-style-type: none;
+	background-color: #FFFFFF; /* 배경 색상 설정 */
+	border: 1px solid #4a4a4a;
+	padding: 10px;
+	margin: 5px 0; /* 항목 간 간격 */
+	justify-content: space-between; /* 양쪽으로 배치 */
+}
+
+.carinfo {
+	display: flex; /* Flexbox 사용 */
+	align-items: center; /* 수직 정렬 */
+    padding: 10px; /* 여백 추가 */
+}
+
+.img {
+	flex: 0 0 auto; /* 이미지 크기를 고정 */
+	margin-right: 20px; /* 이미지와 디테일 간의 간격 */
+}
+
+.cardetail {
+	flex: 1; /* 남은 공간을 차지 */
+	text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.sel ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.sel li {
+	display: inline;
+	margin-right: 20px;
+}
+
+.container_detailsearch {
+	background-color: #FFFFFF; /* 배경 색상 설정 */
+	border: 1px solid black;
+	width: 900px;	
+    margin-bottom: 20px;
+}
+
+/* 버튼 설정 */
+.link-button {
+	background: none; /* 배경 제거 */
+	border: none; /* 테두리 제거 */
+	cursor: pointer; /* 커서 변경 */
+	font: inherit; /* 상속된 폰트 스타일 사용 */
+	padding: 0; /* 패딩 제거 */
+	transition: color 0.3s; /* 부드러운 색상 변화 */
+}
+
+.link-button:hover {
+	color: #0056b3; /* 호버 시 색상 변화 */
+}
+
+#selectTable {
+	width: 100%; /* 테이블 너비 조절 */
+	border-collapse: collapse; /* 테두리 합치기 */
+}
+
+#selectTable td {
+	padding: 10px; /* 셀 안 여백 조절 */
+	font-size: 16px; /* 텍스트 크기 조절 */
+	border: 1px solid #ccc; /* 테두리 스타일 */
+}
+
+.price-input {
+	padding: 20px; /* td의 여백 조절 */
+}
+
+.price-input input[type="text"] {
+	width: 150px; /* 입력 필드 너비 조절 */
+	height: 35px; /* 입력 필드 높이 조절 */
+	font-size: 16px; /* 텍스트 크기 조절 */
+}
+
+.price-input button {
+	height: 35px; /* 버튼 높이 조절 */
+	font-size: 16px; /* 버튼 텍스트 크기 조절 */
+	padding: 0 15px; /* 버튼 좌우 여백 조절 */
+}
+
+.carright input {
+	height: 35px; /* 버튼 높이 조절 */
+	font-size: 16px; /* 버튼 텍스트 크기 조절 */
+	padding: 0 15px; /* 버튼 좌우 여백 조절 */
+}
+
+/* 페이지 스타일 추가 */
+.page {
+	height: 50px;
+	padding: 5px;
+}
+
+.paging {
+	color: black; /* 기본 글자 색상 */
+	text-decoration: none; /* 링크에 밑줄 제거 */
+	font-size: 16px; /* 기본 글자 크기 */
+	font-weight: normal; /* 기본 글자 두께 */
+	margin: 0 10px;
+}
+
+.paging:hover {
+	text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+
+.paging.selected {
+	font-size: 18px; /* 선택된 페이지의 글자 크기 증가 */
+	font-weight: bold; /* 선택된 페이지의 글자 두께 증가 */
+}
+
+/* 현재 페이지 스타일 */
+.currentPaging {
+	color: black; /* 현재 페이지의 글자 색상 */
+	text-decoration: none; /* 현재 페이지 링크에 밑줄 제거 */
+	font-size: 18px; /* 현재 페이지의 글자 크기 */
+	font-weight: bold; /* 현재 페이지의 글자 두께 */
+}
+.btn-submit {
+    width: 100%; /* 버튼 너비 */
+    padding: 10px; /* 버튼 패딩 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #3D3D3D; /* 배경색 */
+    color: white; /* 글자색 */
+    cursor: pointer; /* 커서 모양 */
+    font-size: 18px; /* 글자 크기 */
+}
+
+.btn-submit-1 {
+    width: 100%; /* 버튼 너비 */
+    padding: 10px; /* 버튼 패딩 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #808080; /* 배경색 */
+    color: white; /* 글자색 */
+    cursor: pointer; /* 커서 모양 */
+    font-size: 18px; /* 글자 크기 */
+}
+
+.btn-submit:hover {
+    background-color: #2a2a2a; /* 마우스 오버 시 배경색 변경 */
+}
+
+
+.price-input input[type="text"] {
+    width: 100px; /* 원하는 너비로 설정 */
+    height: 35px; /* 원하는 높이로 설정 */
+    font-size: 16px; /* 텍스트 크기 조절 */
+    padding: 5px; /* 내부 여백 조절 */
+}
+
+.price-input button {
+    height: 35px; /* 버튼 높이 조절 */
+    font-size: 16px; /* 버튼 텍스트 크기 조절 */
+    padding: 0 15px; /* 버튼 좌우 여백 조절 */
+}
+
+
+</style>
+
+<script>
+	function pgGo(pg){
+		document.getElementById('pgValue').value=pg;
+		document.getElementById('listForm').submit();
+	}
+</script>
+
+
+<main>
+<br>
+<div class="total" align="center">
+	<form id="listForm" method="POST" action="oldcarList">
+	<input type="hidden" name="listtype" value="old"/>
+		<div class="container_detailsearch" align="center">
+	
+	
+	<table id = "selectTable" class="table">
+	<tr>
+		<td> 제조사 </td>
+    <td align="center">
+    <ul class="sel">
+    	<li><label><input type="checkbox" name="maker" value="현대" th:checked="${#lists.contains(makers, '현대')}">현대</label></li>
+    	<li><label><input type="checkbox" name="maker" value="기아" th:checked="${#lists.contains(makers, '기아')}">기아</label></li>
+    	<li><label><input type="checkbox" name="maker" value="제네시스" th:checked="${#lists.contains(makers, '제네시스')}">제네시스</label></li>
+    	<li><label><input type="checkbox" name="maker" value="BMW" th:checked="${#lists.contains(makers, 'BMW')}">BMW</label></li>
+    	<li><label><input type="checkbox" name="maker" value="KGM" th:checked="${#lists.contains(makers, 'KGM')}">KGM</label></li>
+    	<li><label><input type="checkbox" name="maker" value="쉐보레" th:checked="${#lists.contains(makers, '쉐보레')}">쉐보레</label></li>
+    	<li><label><input type="checkbox" name="maker" value="르노코리아" th:checked="${#lists.contains(makers, '르노코리아')}">르노코리아</label></li>
+    	<li><label><input type="checkbox" name="maker" value="벤츠" th:checked="${#lists.contains(makers, '벤츠')}">벤츠</label></li>
+    	<li><label><input type="checkbox" name="maker" value="테슬라" th:checked="${#lists.contains(makers, '테슬라')}">테슬라</label></li>
+    </ul>
+    </td>
+   	</tr>
+   	
+	<tr>
+		<td> 크기 </td>
+    <td align="center">
+    <ul class="sel">
+    	<li><label><input type="checkbox" name="carsize" value="경차" th:checked="${#lists.contains(sizes, '경차')}"> 경차</label></li>
+    	<li><label><input type="checkbox" name="carsize" value="소형" th:checked="${#lists.contains(sizes, '소형')}"> 소형</label></li>
+    	<li><label><input type="checkbox" name="carsize" value="준중형" th:checked="${#lists.contains(sizes, '준중형')}"> 준중형</label></li>
+    	<li><label><input type="checkbox" name="carsize" value="중형" th:checked="${#lists.contains(sizes, '중형')}"> 중형</label></li>
+    	<li><label><input type="checkbox" name="carsize" value="준대형" th:checked="${#lists.contains(sizes, '준대형')}"> 준대형</label></li>
+    	<li><label><input type="checkbox" name="carsize" value="대형" th:checked="${#lists.contains(sizes, '대형')}"> 대형</label></li>
+    	<li><label><input type="checkbox" name="carsize" value="트럭" th:checked="${#lists.contains(sizes, '트럭')}"> 트럭</label></li>
+    </ul>
+	</td>
+	</tr>    
+    
+	<tr>
+		<td> 연료 </td>
+    <td align="center">
+    <ul class="sel">
+    	<li><label><input type="checkbox" name="fuelType" value="가솔린" th:checked="${#lists.contains(fuels, '가솔린')}">가솔린</label></li>
+    	<li><label><input type="checkbox" name="fuelType" value="하이브리드" th:checked="${#lists.contains(fuels, '하이브리드')}">하이브리드</label></li>
+    	<li><label><input type="checkbox" name="fuelType" value="디젤" th:checked="${#lists.contains(fuels, '디젤')}">디젤</label></li>
+    	<li><label><input type="checkbox" name="fuelType" value="LPG" th:checked="${#lists.contains(fuels, 'LPG')}">LPG</label></li>
+    	<li><label><input type="checkbox" name="fuelType" value="전기" th:checked="${#lists.contains(fuels, '전기')}">전기</label></li>
+    </ul>
+	</td>
+	</tr>
+	    
+    <tr>
+    	<td><p>가격대</p></td>
+    	<td align="center" class="price-input">
+    	최소 금액 : <input type="text" name="minPrice" th:value="${minPrice}">
+    	최대 금액 : <input type="text" name="maxPrice" th:value="${maxPrice}">(단위 : 만)
+    	</td>
+    </tr>
+    <tr>
+    <td colspan="2">
+    	<button type="submit"  class="btn-submit" onclick="pgGo(1)">검색</button>
+    </td>
+	</tr>
+	</table>
+</div>
+
+
+<th:block th:if="${list != null}">
+<div class="container_oldcarList">
+	<ul th:each="car : ${list}">
+		<li class="carlist">
+			<div class="carinfo">
+				<div class="img">
+					<a id="subjectA" th:href="@{/carView(carnum=${car.carnum})}">
+	         			<img th:src="@{car/} + ${car.carimage}" width="200" height="150">
+	         		</a>
+	         	</div>
+	         	<div class="cardetail">
+					<p style="font-size: 24px;"><strong> [[${car.maker}]] [[${car.modelname}]]</strong></p>
+					<br>
+					<p style="font-size: 18px;">등록일 : [[${car.cardate}]] | 차종 : [[${car.carsize}]]</p>
+					<br>
+					<p style="font-size: 18px;">연식 : [[${car.caryear}]]년식 | 주행거리 : [[${car.mileage}]]km</p>
+				</div>
+			
+				<div class="carright" style="display: flex; justify-content: space-between; align-items: center;">
+					<div>
+						<p><strong>출고가 : [[${car.price}]] 만원 ~&nbsp;&nbsp;&nbsp;</strong></p>
+					</div>
+					<div>
+					<th:block th:if="${car.condition == 'old'}">
+						<a th:href="@{/carView(carnum=${car.carnum})}">
+							<input type="button" class="btn-submit" value="상담신청">
+						</a>
+					</th:block>
+					<th:block th:if="${car.condition == 'sellrdy'}">
+							<input type="button" class="btn-submit-1" value="예약된 차량" disabled>
+					</th:block>
+					</div> 
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+
+
+
+
+
+<div align="center" class="page">
+    <!-- 이전 버튼 만들기 -->
+    <input type="hidden" name="pg" id="pgValue" th:value="${pg}">
+    <th:block th:if="${startPage > 3}">
+    	<button class="link-button" type="submit"  th:onclick="pgGo([[${pg - 1}]])"> &lt;&lt;</button>
+    </th:block>
+    <!-- 숫자 버튼 만들기 -->
+    <th:block th:if="${endPage!=0}">
+    <th:block th:each="page : ${#numbers.sequence(startPage,endPage)}">
+        <th:block th:if="${pg == page}">
+        	[<button class="link-button currentPaging" type="submit">[[${page}]]</button>]
+        </th:block>
+        <th:block th:unless="${pg == page}">
+        	[<button  class="link-button paging"type="submit" th:onclick="pgGo([[${page}]])">[[${page}]]</button>]
+        </th:block>
+    </th:block>
+    </th:block>
+    <!-- 다음 버튼 만들기 -->
+    <th:block th:if="${endPage < totalPage}">
+    	<button  class="link-button" type="submit" th:onclick="pgGo([[${endPage+1}]])">>></button>
+    </th:block>
+</div>
+
+
+</th:block>
+</form>
+
+<th:block th:if="${list.size() == 0}">
+    <div style="height:600px;">
+    	<br>
+       	<h2 style="text-align: left; margin: 0 0 20px 40px;">해당 항목이 존재하지 않습니다.</h2>
+    </div>
+</th:block>
+
+
+</div>
+
+</main>
+
+<div th:replace="~{layouts/footer}"></div>

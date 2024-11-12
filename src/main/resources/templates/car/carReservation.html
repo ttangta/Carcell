@@ -1,0 +1,157 @@
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+
+<style type="text/css">
+
+
+
+.join-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Container margin */
+    padding: 20px;
+    min-height: 555px;
+    background-color: #F0F0F0;
+}
+
+.join-box {
+    width: 600px;
+    padding: 20px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+tr{
+	width: 30%;
+}
+
+td {
+    padding: 10px;
+    vertical-align: middle;
+    border: none;
+}
+
+.form-control {
+    width: calc(100% - 150px); /* Adjust width to fit button in the same line */
+    padding: 10px;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline-color: #3D3D3D !important;
+}
+
+#reset {
+    background-color: #FFFFFF;
+    color: #3D3D3D;
+    border-color: #3D3D3D;
+    outline-color: #3D3D3D !important;
+}
+
+#submit {
+    background-color: #3D3D3D;
+    color: #FFFFFF;
+    border-color: #3D3D3D;
+    outline-color: #3D3D3D !important;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group .btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3D3D3D;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.form-group .btn:hover {
+    background-color: #2a2a2a;
+}
+
+#submit {
+    background-color: #3D3D3D; /* 배경색 */
+    color: #FFFFFF; /* 글자색 */
+    border-color: #3D3D3D; /* 테두리 색상 */
+    outline-color: #3D3D3D !important; /* 아웃라인 색상 */
+}
+
+.form-group .btn {
+    width: 100%; /* 버튼 너비 */
+    padding: 10px; /* 버튼 패딩 */
+    border: none; /* 테두리 없음 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #3D3D3D; /* 배경색 */
+    color: white; /* 글자색 */
+    cursor: pointer; /* 커서 모양 */
+    font-size: 14px; /* 글자 크기 */
+}
+
+
+</style>
+
+<div th:replace="~{layouts/header}"></div>
+
+<div class="join-container">
+    <div class="join-box">
+        <h5>상담 신청 되었습니다.</h5>
+        <table>
+            <!-- 이름 -->
+            <tr>
+                <th>이름</th>
+                <td>
+                    [[${userName}]]
+                </td>
+            </tr>
+            
+            <!-- 차량정보 -->
+            <tr>
+                <th>차량 정보</th>
+                <td>
+                    [[${car.maker}]] [[${car.modelname}]]    
+                </td>
+            </tr>
+
+            <!-- 주소 -->
+            <tr>
+                <th>판매점 이름</th>
+                <td>
+                    [[${shop.shopname}]]
+                </td>
+            </tr>
+            <tr>
+                <th>판매점 주소</th>
+                <td>
+                    [[${shop.address}]]
+                </td>
+            </tr>
+
+            <!-- 버튼들 -->
+            <tr>
+                <td colspan="2" align="right">
+                <th:block th:if="${car.condition =='new'}">
+                    <input type="button" class="btn btn-primary" id="submit" onclick="location.href='newcarList'" value="목록으로">
+                </th:block>
+                <th:block th:if="${car.condition !='new'}">
+                    <input type="button" class="btn btn-primary" id="submit" onclick="location.href='oldcarList'" value="목록으로">
+                </th:block>
+                    <input type="button" class="btn btn-primary" id="submit" onclick="location.href='/member/userView'" value="마이페이지">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{layouts/footer}"></div>

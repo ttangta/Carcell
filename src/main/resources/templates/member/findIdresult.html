@@ -1,0 +1,18 @@
+<script type="text/javascript">
+	window.onload = function(){
+		setTimeout(function(){
+			if("[[${result}]]" == "true"){
+				if(confirm("회원님의 아이디는 [ " + "[[${id}]]" + " ] 입니다. 비밀번호를 찾으시겠습니까?")){
+					location.href = "/member/findMemberForm?menu=pw";
+				}else{
+					history.back();
+				}
+			}else{
+				alert("존재하지 않는 회원정보입니다. 이름 또는 이메일을 다시 한 번 확인해 주세요");
+				history.back();
+			}
+			
+		},100);
+	}
+
+</script>

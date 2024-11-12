@@ -1,0 +1,146 @@
+<div th:replace="~{layouts/header}"></div>
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<style type="text/css">
+.find-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 555px;
+    background-color: #f7f7f7;	
+    margin:0;
+    font-family: 'NanumSquareNeo', Arial, sans-serif;
+}
+.findmenu{
+    width: 600px;
+    padding: 20px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #FFFFFF;
+    align-items: center;
+}
+.form-group-n{
+	width: 95%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.form-group-e{
+	width: 50%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+select{
+    width: 40%;
+    padding: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+#idbutton {
+    width: 47%;
+    height: 40px;
+    background-color: #3D3D3D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+#idbutton :hover {
+    background-color: #2a2a2a;
+}
+.table{
+	margin:auto; 
+	width: 450px;
+	border: hidden;
+}
+.table tr{
+	border: hidden;
+}
+#find{
+	font-size: 15px;
+	text-decoration: none;
+	color: 3D3D3D;
+}
+#find:hover{text-decoration: underline;}
+
+</style>
+<script type="text/javascript">
+	window.onload = function(){
+		var img = document.getElementById("imgCheck");
+		img.setAttribute("src","/img/x.png");
+	}
+	function goMain(){
+		window.close();
+		opener.location.href = "/main";
+	}
+	
+	function checkPw(){
+		var frm = document.pwmodify;
+		var pw = frm.pw.value;
+		var re_pw = frm.re_pw.value;
+		var img = document.getElementById("imgCheck");
+		if(pw == re_pw){
+			img.setAttribute("src","/img/o.png");
+		}else{
+			img.setAttribute("src","/img/x.png");
+		}
+	}
+	
+	function inputCheck(){
+		var frm = document.pwmodify;
+		if(!frm.pw.value.trim()){
+			alert("비밀번호를 입력하세요");
+			frm.pw.focus();
+			return false;
+		}else if(!frm.re_pw.value.trim()){
+			alert("비밀번호 재확인을 입력해주세요");
+			frm.re_pw.focus();
+			return false;
+		}else if(frm.pw.value != frm.re_pw.value){
+			alert("비밀번호와 재확인 비밀번호가 서로 다릅니다 ")
+			return false;
+		}
+		frm.submit();
+	}
+	
+</script>
+<div class="find-container">
+	<div class="findmenu">
+		<form action="/member/pwmodify" name="pwmodify" method="post">
+		<input type="hidden" name="id" th:value="${id}">
+			<table class="table">
+				<tr>
+					<td>비밀번호</td>
+					<td>
+						<input type="password" name="pw">
+					</td>
+				</tr>
+				<tr>
+					<td>비밀번호 재확인</td>
+					<td>
+						<input type="password" name="re_pw" onblur="checkPw()">
+						<img src="" width="20px" height="20px" id="imgCheck" style="margin-left:5px;">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center" >
+						<input type="button" id="idbutton" class="btn btn-dark btn-sm" value="비밀번호 수정" onclick="inputCheck()">
+						<input type="button" id="idbutton" class="btn btn-dark btn-sm" value="다시작성" onclick="window.location.reload()">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<div th:replace="~{layouts/footer}"></div>
